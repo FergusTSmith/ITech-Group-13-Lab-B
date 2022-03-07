@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views import View
+from rent_live import views
+from django.urls import include
 
 urlpatterns = [
+    path('', views.IndexView.as_view(), name='index'),
+    path('rentlive/', include('rent_live.urls')),
     path('admin/', admin.site.urls),
 ]
