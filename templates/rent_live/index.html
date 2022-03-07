@@ -1,0 +1,37 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Rent Live - HomePage
+{% endblock %}
+
+{% block body_block %}
+<div>
+	<h1>Find A Flat</h1>
+	<p>Rent Live has collected 999+ rooms for renting</p>
+</div>
+
+<div>
+	<p><strong>Recommended Rooms</strong></p>
+	<hr/>
+
+	{% if property_list %}
+		Mabaw
+	{% else %}
+		No properties have been uploaded yet!
+	{% endif %}
+
+	<hr/>
+
+	<strong>Recommended Letting Agents</strong>
+	<hr/>
+
+	{% if lettingagent_list %}
+		Bawwwwww
+	{% else %}
+		No letting agents have been uploaded yet!
+	{% endif %}	
+	
+</div>
+{% endblock %}
+

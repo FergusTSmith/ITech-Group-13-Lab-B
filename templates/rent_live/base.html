@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+	<head lang="en">
+		<meta charset ="UTF-8">
+		<div class = "header">
+			<hr/>
+			<ul>
+				<li><a href="{% url 'rent_live:index' %}">HomePage</a></li>
+				<li><a href="{% url 'rent_live:search' %}">Search</a></li>
+				<li><a href="{% url 'rent_live:about' %}">About Us</a></li>
+				<li><a href="{% url 'rent_live:contact' %}">Contact</a></li>
+				<li><a href="{% url 'rent_live:register' %}">Register</a></li>
+		<title>
+			{% block title_block %}
+				Rent Live - The Tenant's Tool
+			{% endblock %}
+		</title>
+	</head>
+	<body>
+		<div>
+			{% block body_block %}
+			{% endblock %}
+		</div>
+		<hr/>
+	</body>
+</html>
