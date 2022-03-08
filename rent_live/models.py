@@ -22,7 +22,7 @@ class LettingAgent(models.Model):
     helpfulnessRating = models.IntegerField(default=0)
     promptnessRating = models.IntegerField(default=0)
     qualityRating = models.IntegerField(default=0)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    #category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     city = models.CharField(max_length=3)
     logo = models.ImageField(upload_to='logo_images', blank=True)
 
@@ -34,7 +34,8 @@ class City(models.Model):
     uniqueName = models.CharField(max_length=3, unique=True)
     picture = models.ImageField(upload_to='city_images', blank=True)
     description = models.CharField(max_length=500)
-    categories = models.ForeignKey(Category, on_delete=models.CASCADE)
+    #categories = models.ForeignKey(Category, on_delete=models.CASCADE)
+    categories = models.CharField(max_length=50)
 
     def __str__(self):
         return self.uniqueName
@@ -48,15 +49,19 @@ class Rental_Property(models.Model):
     address = models.CharField(max_length=500, unique=True)
     description = models.CharField(max_length=500)
     picture = models.ImageField(upload_to='property_images', blank=True)
-    cleanlinessRating = models.IntegerField()
-    accuracyRating = models.IntegerField()
-    enjoyabilityRating = models.IntegerField()
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    lettingAgent = models.ForeignKey(LettingAgent, on_delete=models.CASCADE)
-    price = models.IntegerField()
-    size = models.IntegerField()
+    cleanlinessRating = models.IntegerField(default=0)
+    accuracyRating = models.IntegerField(default=0)
+    enjoyabilityRating = models.IntegerField(default=0)
+    #city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.CharField(max_length=3)
+    #lettingAgent = models.ForeignKey(LettingAgent, on_delete=models.CASCADE)
+    lettingAgent = models.CharField(max_length=20)
+    price = models.IntegerField(default=0)
+    size = models.IntegerField(default=0)
     followers = models.IntegerField(default=0)
-    state = models.BooleanField()
+    state = models.BooleanField(default=True)
+
+    objects = models.Manager()
 
     slug = models.SlugField(unique=True)
 
@@ -87,9 +92,9 @@ class Comment(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     Description = models.CharField(max_length=500)
     Date = models.DateField(auto_now_add=True)
-    cleanlinessRating = models.IntegerField()
-    accuracyRating = models.IntegerField()
-    enjoyabilityRating = models.IntegerField()
+    cleanlinessRating = models.IntegerField(default=0)
+    accuracyRating = models.IntegerField(default=0)
+    enjoyabilityRating = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
 
     def __str__(self):

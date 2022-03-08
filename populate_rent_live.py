@@ -83,56 +83,57 @@ def populate():
         'followers': 112,
         'state': True},
     ]
-    for l in letting_agents:
-        add_agent(l['name'], l['description'], l['phone'], l['email'], l['category'], l['city'])
         
     for cat in categories:
         add_category(cat['name'], cat['description'])
 
+    for l in letting_agents:
+        add_agent(l['name'], l['description'], l['phone'], l['email'], l['city'])
+
     for c in cities:
-        add_city(c['name'], c['uniqueName'], c['description'], c['categories'])
+        add_city(c['name'], c['uniqueName'], c['description'])
 
     for r in rentals:
         add_rental(r['name'], r['address'], r['description'], r['city'], r['lettingAgent'], r['price'], r['size'], r['followers'], r['state'])
 
 
 
-    def add_category(name, description):
-        c = Category.objects.get_or_create(name=name)[0]
-        c.description = description
-        c.save()
-        return c
+def add_category(name, description):
+    c = Category.objects.get_or_create(name=name)[0]
+    c.description = description
+    c.save()
+    return c
 
-    def add_agent(name, description, phone, email, category, city):
-        l = LettingAgent.objects.get_or_create(name=name)
-        l.description = description
-        l.phone = phone
-        l.email = email
-        l.category = category
-        l.city = city
-        l.save()
-        return l
+def add_agent(name, description, phone, email, city):
+    l = LettingAgent.objects.get_or_create(name=name)
+    l[0].description = description
+    l[0].phone = phone
+    l[0].email = email
+    #l.category = category
+    l[0].city = city
+    l[0].save()
+    return l[0]
 
-    def add_city(name, uniqueName, description, categories):
-        c = City.objects.get_or_create(uniqueName=uniqueName)
-        c.name = name
-        c.description = description
-        c.categories = categories
-        c.save()
-        return c
+def add_city(name, uniqueName, description):
+    c = City.objects.get_or_create(uniqueName=uniqueName)
+    c[0].name = name
+    c[0].description = description
+    #c[0].categories = categories
+    c[0].save()
+    return c[0]
 
-    def add_rental(name, address, description, city, lettingAgent, price, size, followers, state):
-        r = Rental_Property.objects.get_or_create(address=address)
-        r.name = name
-        r.description = description
-        r.city = city
-        r.lettingAgent = lettingAgent
-        r.price = price
-        r.size = size
-        r.followers = followers
-        r.state = state
-        r.save()
-        return r
+def add_rental(name, address, description, city, lettingAgent, price, size, followers, state):
+    r = Rental_Property.objects.get_or_create(address=address)
+    r[0].name = name
+    r[0].description = description
+    r[0].city = city
+    r[0].lettingAgent = lettingAgent
+    r[0].price = price
+    r[0].size = size
+    r[0].followers = followers
+    r[0].state = state
+    r[0].save()
+    return r
 
 
 

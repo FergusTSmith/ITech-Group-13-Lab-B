@@ -25,62 +25,62 @@ class ContactView(View):
     def get(self, request):
         return HttpResponse("This is the page for contacting us")
 
-class Search(View):
+class SearchView(View):
     def get(self, request):
         return HttpResponse("This is the search page, where you will be able to search for properties")
 
-class SearchResult(View):
+class SearchResultView(View):
     def get(self, request):
         return HttpResponse("This is the search result page, which will show the search results for each search.")
 
-class City(View):
+class CityView(View):
     def get(self, request):
         return HttpResponse("This is the City page, will the information on the city's letting agents and properties.")
 
-class Rental_Property(View):
+class Rental_PropertyView(View):
     def get(self, request):
         return HttpResponse("This is the page containing different rental properties")
 
-class Property(View):
+class PropertyView(View):
     def get(self, request):
         return HttpResponse("This is the page for a specific property")
 
-class LettingAgents(View):
+class LettingAgentsView(View):
     def get(self, request):
         return HttpResponse("This is the page detailing different letting agents")
 
-class LettingAgent(View):
+class LettingAgentView(View):
     def get(self, request):
         return HttpResponse("This is the page for a specific letting agent")
 
-class LAComments(View):
+class LACommentsView(View):
     def get(self, request):
         return HttpResponse("This is the page detailing the comments for letting agent")
 
-class LAProperties(View):
+class LAPropertiesView(View):
     def get(self, request):
         return HttpResponse("This is the page for seeing specific rental properties offered by a letting agent")
 
-class Register(View):
+class RegisterView(View):
     def get(self, request):
         return HttpResponse("This page will let you register a new account")
 
-class LogIn(View):
+class LogInView(View):
     def get(self, request):
         return HttpResponse("This page will let you log in")
 
-class UserPage(View):
+class UserPageView(View):
     def get(self, request):
         return HttpResponse("This page will display the specific user's page and details")
 
-class UserMessages(View):
+class UserMessagesView(View):
     def get(self, request):
         return HttpResponse("This page will show the messages for the user")
 
-class UserComments(View):
+class UserCommentsView(View):
     def get(self, request):
         return HttpResponse("This page will show the comments for a user")
     
-class UserRentals(View):
+class UserRentalsView(View):
     def get(self, request):
         return HttpResponse("This page will show the previously rented properties for a user.")

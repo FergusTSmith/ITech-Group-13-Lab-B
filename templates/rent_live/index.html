@@ -15,8 +15,12 @@
 	<p><strong>Recommended Rooms</strong></p>
 	<hr/>
 
-	{% if property_list %}
-		Mabaw
+	{% if properties %}
+		<ul>
+		{% for property in properties %}
+			<li>{{ property.name }} , {{ property.address }}</li>
+		{% endfor %}
+		</ul>
 	{% else %}
 		No properties have been uploaded yet!
 	{% endif %}
@@ -26,8 +30,12 @@
 	<strong>Recommended Letting Agents</strong>
 	<hr/>
 
-	{% if lettingagent_list %}
-		Bawwwwww
+	{% if lettingAgents %}
+		<ul>
+		{% for agent in lettingAgents %}
+			<li>{{ agent.name }} , {{ agent.email }}</li>
+		{% endfor %}
+		</ul>
 	{% else %}
 		No letting agents have been uploaded yet!
 	{% endif %}	
