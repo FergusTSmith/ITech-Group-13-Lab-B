@@ -1,0 +1,32 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Rent Live - About Us
+{% endblock %}
+
+{% block body_block %}
+<div>
+	<h1>About the Site</h1>
+	<p>Our web application is being developed with the purpose of providing renters with a centralized information base on rental properties and letting agents operating in their area. The primary aim is to aid users in finding long term rentals and seeing other renter’s experience with the property. </p>
+	<p>This app will provide renters with a centralized peer-submitted information base reviewing rental properties and the companies concerned. Through the interaction and discussion with other users, renters will be able to more adequately gain knowledge of which agencies offer the services and properties that they are looking for and can then arrange rental agreements, all through the site. </p>
+</div>
+
+<div>
+	<h2>About the Creators</h2>
+	<p>This site was created by Group 13 for the University of Glasgow Class Internet Technology</p>
+	<p>Team Members:</p>
+		<ul>
+			<li>Fergus Smith - 2134403S</li>
+			<li>Shaobo Yang</li>
+			<li>Qiliang Zhu</li>
+			<li>Yue Wei</li>
+		</ul>
+</div>
+
+<hr/>
+<div>
+	<a href="{% url 'rent_live:contact' %}">Contact Us</a>
+</div>
+{% endblock %}
+

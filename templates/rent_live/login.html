@@ -1,0 +1,24 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Rent Live - User Registration
+{% endblock %}
+
+{% block body_block %}
+	<h1> User Login - Rent Live </h1>
+	<form id="login_form" method="post" action="{% url 'rent_live:login' %}">
+		{% csrf_token %}
+		Username: <input type="text" name="username" value="" size="35" />
+		<br/>
+		<br/>
+		Password: <input type="password" name="password" value="" size="35" />
+		<br />
+		<br/><br/>
+		<input type="submit" value="submit" />
+	</form>
+	<hr/>
+	<div>
+		<p>Don't have an account on Rent Live? Register Here: <a href="{% url 'rent_live:register' %}">Register</a></p>
+	</div>
+{% endblock %}

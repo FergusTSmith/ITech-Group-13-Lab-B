@@ -1,0 +1,14 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Log Out Page
+{% endblock %}
+
+{% block body_block %}
+	<h1> User Logout - Rent Live </h1>
+	<p>You have now been logged out.</p>
+	<div>
+		<p>Want to log back in? Log in <a href="{% url 'rent_live:login' %}">here</a></p>
+	</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Rent Live - User Registration
+{% endblock %}
+
+{% block body_block %}
+	<h1>User Registration - RentLive</h1>
+
+	{% if registered %}
+		<p>Thank you for registering.<p>
+			<a href="{% url 'rent_live:index' %}">Click here to return to the hompage</a>
+			<a href="{% url 'rent_live:index' %}">Else, click here to visit your profile!</a>
+	{% else %}
+		<p>Please register by filling in your information below</p><br />
+		<form id="user_form" method="post" action="{% url 'rent_live:register' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			{{ user_form.as_p }}
+			{{ profile_form.as_p }}
+
+			<input type="submit"name="submit"value="Register"/>
+		</form>
+	{% endif %}
+
+{% endblock %}

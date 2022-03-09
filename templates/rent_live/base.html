@@ -11,7 +11,13 @@
 				<li><a href="{% url 'rent_live:search' %}">Search</a></li>
 				<li><a href="{% url 'rent_live:about' %}">About Us</a></li>
 				<li><a href="{% url 'rent_live:contact' %}">Contact</a></li>
+				{% if user.is_authenticated %}
+				<li><a href="{% url 'rent_live:profile' user.username %}">My Profile</a></li>
+				<li><a href="{% url 'rent_live:logout' %}">Logout</a></li>
+				{% else %}
 				<li><a href="{% url 'rent_live:register' %}">Register</a></li>
+				<li><a href="{% url 'rent_live:login' %}">Login</a></li>
+				{% endif %}
 		<title>
 			{% block title_block %}
 				Rent Live - The Tenant's Tool
@@ -23,6 +29,9 @@
 			{% block body_block %}
 			{% endblock %}
 		</div>
-		<hr/>
 	</body>
 </html>
+
+<footer>
+	<p>This site has been developed by <a href="{% url 'rent_live:about' %}">ITech Group 13</a></p>
+</footer>

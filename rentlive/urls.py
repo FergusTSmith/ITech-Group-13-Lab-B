@@ -18,9 +18,12 @@ from django.urls import path
 from django.views import View
 from rent_live import views
 from django.urls import include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('rentlive/', include('rent_live.urls')),
     path('admin/', admin.site.urls),
-]
+    path('accounts/', include('registration.backends.simple.urls'))
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

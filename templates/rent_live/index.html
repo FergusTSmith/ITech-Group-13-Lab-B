@@ -7,6 +7,11 @@
 
 {% block body_block %}
 <div>
+	{% if user.is_authenticated %}
+		Welcome back, {{ user.username }}
+	{% else %}
+		New to Rent Live? Sign Up <a href="{% url 'rent_live:register' %}">here</a> 
+	{% endif %}
 	<h1>Find A Flat</h1>
 	<p>Rent Live has collected 999+ rooms for renting</p>
 </div>

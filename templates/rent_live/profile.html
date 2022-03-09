@@ -1,0 +1,57 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	{{ selected_user.username }}
+{% endblock %}
+
+{% block body_block %}
+<div>
+	<div>
+		{% if user_profile.picture %}
+		<img src="{{ MEDIA_URL }}{{ user_profile.picture}}" width="250"height="250"alt="User profile image - {{ selected_user.usernam}}">
+		{% else %}
+		<img src="https://lorempixel.com/300/300/people/" width="250" height="250" alt="Blank Profile Image" />
+		{% endif %}
+	</div>
+	<div>
+		<p>Name: {{ selected_user.username }}</p>
+		<p>Email: {{ selected_user.email }}</p>
+		<p>Date Joined: {{ selected_user.datejoined }}</p>
+		<p>Likes: {{ selected_user.likes }}</p>
+		{% if selected_user.isagent %}
+		<p>Phone Number: </p>
+		<p>Helpfulness Rating: </p>
+		<p>Promptness Rating: </p>
+		<p>Quality Rating: </p>
+		<p>City: </p>
+		{% endif %}
+
+	<hr/>
+
+	<!--- User is an Agent --->
+
+	</div>
+
+	<div>
+
+	<!--- This is the User's profile --->
+		{% if selected_user == user %}
+			<a href="{% url 'rent_live:index' %}">My Followed Rooms</a>
+			<a href="{% url 'rent_live:index' %}">My Messages</a>
+			<a href="{% url 'rent_live:index' %}">My Comments</a>
+
+		<!--- user is viewing another profile --->
+		{% else %}
+			<a href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Followed Rooms</a>
+			<a href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Messages</a>
+			<a href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Comments</a>
+		{% endif %}
+	<div>
+
+	<div>
+
+	<!--- user is viewing another profile --->
+
+</div>
+{% endblock %}

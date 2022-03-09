@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 from django.template.defaultfilters import slugify
 
@@ -75,21 +75,24 @@ class Rental_Property(models.Model):
     def __str__(self):
         return self.name
 
-class User(models.Model):
-    username = models.CharField(max_length=30, unique=True)
-    email = models.CharField(max_length=128, unique=True)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    #username = models.CharField(max_length=30, unique=True)
+    #email = models.CharField(max_length=128, unique=True)
     datejoined = models.DateField(auto_now_add=True)
     accessibleUser = models.BooleanField(default=False)
     superUser = models.BooleanField(default=False)
     profilePic = models.ImageField(upload_to='profile_images', blank=True)
     totallikes = models.IntegerField(default=0)
     totalComments = models.IntegerField(default=0)
+    isAgent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username
 
 class Comment(models.Model):
-    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     Description = models.CharField(max_length=500)
     Date = models.DateField(auto_now_add=True)
     cleanlinessRating = models.IntegerField(default=0)
@@ -98,5 +101,5 @@ class Comment(models.Model):
     likes = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.User
+        return self.user.username
 
