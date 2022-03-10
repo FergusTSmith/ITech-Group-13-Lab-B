@@ -4,20 +4,22 @@
 <html>
 	<head lang="en">
 		<meta charset ="UTF-8">
+		<link rel="stylesheet"type="text/css"href="{% static 'css/rent_live/style.css' %}">
 		<div class = "header">
 			<hr/>
-			<ul>
-				<li><a href="{% url 'rent_live:index' %}">HomePage</a></li>
-				<li><a href="{% url 'rent_live:search' %}">Search</a></li>
-				<li><a href="{% url 'rent_live:about' %}">About Us</a></li>
-				<li><a href="{% url 'rent_live:contact' %}">Contact</a></li>
+			<ul class = "Navigation-Bar">
+				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:index' %}">HomePage</a></li>
+				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:search' %}">Search</a></li>
+				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:about' %}">About Us</a></li>
+				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:contact' %}">Contact</a></li>
 				{% if user.is_authenticated %}
-				<li><a href="{% url 'rent_live:profile' user.username %}">My Profile</a></li>
-				<li><a href="{% url 'rent_live:logout' %}">Logout</a></li>
+				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:profile' user.username %}">My Profile</a></li>
+				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:logout' %}">Logout</a></li>
 				{% else %}
-				<li><a href="{% url 'rent_live:register' %}">Register</a></li>
-				<li><a href="{% url 'rent_live:login' %}">Login</a></li>
+				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:register' %}">Register</a></li>
+				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:login' %}">Login</a></li>
 				{% endif %}
+			</ul>
 		<title>
 			{% block title_block %}
 				Rent Live - The Tenant's Tool
