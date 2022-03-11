@@ -18,6 +18,11 @@ li .Nav-Link{
 	float:left;
 }
 
+.Side-Link {
+	color: white;
+	padding: 10px 8px;
+}
+
 body {
   background-color: azure;
 }
@@ -31,7 +36,6 @@ li a{
 	top: 0;
 	width: 100%;
 	list-style-type: none;
-	margin: 0;
 	padding: 0;
 	overflow: hidden;
 	background-color: darkslategrey;
@@ -53,13 +57,58 @@ h1 {
 
 li {
 	text-align: center;
+	text-decoration: none;
+	list-style-type: none;
+}
+
+.City-Link {
+	text-align: left;
+	padding: 11px 5px;
+	border-top: 1px solid white;
+	color: white;
+	text-decoration: none;
+}
+
+.LAHeading {
+	text-align: center;
 }
 
 .Search {
 	text-align: center;
+	margin-left: 100px;
 }
 
 .Welcome{
 	text-align: center;
+	margin-left: 100px;
 }
 
+.SideBar {
+	position: fixed;
+	height: 100%;
+	background-color: darkslategrey;
+	overflow: hidden;
+	width: 100px;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	color: white;
+}
+
+.body {
+	margin-left: 100px;
+	padding: 1px 20px;
+	height: 1000px;
+}
+
+strong.LAHeading {
+	text-align: center;
+}
+
+.logo {
+	float: left;
+}
+
+.register{
+	text-align: center;
+}

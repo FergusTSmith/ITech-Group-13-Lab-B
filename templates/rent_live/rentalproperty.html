@@ -1,0 +1,44 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	{{ property.name }}
+{% endblock %}
+
+{% block body_block %}
+	<h1> {{ property.name }} </h1>
+
+
+
+	<ul class = 'RentalDetails'>
+		<li>Location: {{ property.address}}</li>
+		<li>Square meters: {{ property.size }}m^2</li>
+		<li>Cleanliness Rating: {{ property.cleanlinessRating }}</li>
+		<li>Accuracy Rating: {{ property.accuracyRating }}</li>
+		<li>Enjoyability Rating: {{ property.enjoyabilityRating }}</li>
+		<li>Followers: {{ property.followers }}</li>
+		<li>Agent: {{ property.lettingAgent }}</li>
+	</ul>
+
+	<div class ="price">
+		<p class = "pricedetails"> £{{ property.price }}</p>
+	</div>
+
+	<hr/>
+	<div class="propertydescription">
+		<p><strong>Description</strong></p>
+		<p> {{ property.description }}</p>
+	</div>
+
+	<hr/>
+	<div class="AgentDetails">
+		<p><strong>Contact Letting Agent</strong></p>
+		<p> {{ property.lettingAgent }}</p>
+	</div>
+
+	<hr/>
+	<div class="comments">
+		<p><strong>Comments</strong></p>
+	</div>
+
+{% endblock %}

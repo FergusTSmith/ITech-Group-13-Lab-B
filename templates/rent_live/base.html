@@ -5,9 +5,12 @@
 	<head lang="en">
 		<meta charset ="UTF-8">
 		<link rel="stylesheet"type="text/css"href="{% static 'css/rent_live/style.css' %}">
+		
+
+
 		<div class = "header">
-			<hr/>
 			<ul class = "Navigation-Bar">
+				<img class = "logo" src="{% static 'images/RentLiveLogo.png' %}" alt="Rent Live's Logo"/>
 				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:index' %}">HomePage</a></li>
 				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:search' %}">Search</a></li>
 				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:about' %}">About Us</a></li>
@@ -20,6 +23,23 @@
 				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:login' %}">Login</a></li>
 				{% endif %}
 			</ul>
+		</div>
+
+		<div class = "Side">
+			<ul class = "SideBar">
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">Glasgow</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'edi' %}">Edinburgh</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">Inverness</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'dnd' %}">Dundee</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">Aberdeen</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">Stirling</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">Perth</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">Dumfermline</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">StAndrews</a></li>
+				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">Dumfries</a></li>
+			</ul>
+		</div>
+
 		<title>
 			{% block title_block %}
 				Rent Live - The Tenant's Tool
@@ -27,7 +47,7 @@
 		</title>
 	</head>
 	<body>
-		<div>
+		<div class="body">
 			{% block body_block %}
 			{% endblock %}
 		</div>

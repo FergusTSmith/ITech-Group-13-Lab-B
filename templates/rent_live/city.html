@@ -1,0 +1,43 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	{{ city.name }}
+{% endblock %}
+
+{% block body_block %}
+	<h1> {{ city.name }} </h1>
+
+	<div class = "Picture-Section">
+	{% if city.picture %}
+		<img src="{{ MEDIA_URL }}{{ city.picture }}" width="250"height="250"alt="Image of the city of {{ city.name }}">
+	{% else %}
+		<img src="https://lorempixel.com/300/300/people/" width="250" height="250" alt="Blank City Image" />
+	{% endif %}
+	</div>
+
+	<hr/>
+
+	<div class="CityDescription">
+		<p>{{ city.description }}</p>
+	</div>
+
+	<hr/>
+
+	<div class="CityProperties">
+		{% if properties %}
+			<ul class="Properties">
+				{% for property in properties %}
+					<li><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			This city has no properties uploaded
+		{% endif %}
+
+		</ul>
+	</div>
+
+
+
+{% endblock %}

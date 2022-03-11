@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
 from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile
-from rent_live.forms import UserForm, UserProfileForm
+from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -17,10 +17,12 @@ class IndexView(View):
     def get(self, request):
         property_list = Rental_Property.objects.order_by('-followers')[:3]
         lettingagent_list = LettingAgent.objects.order_by('-qualityRating')[:3]
+        city_list = City.objects.order_by('name')
 
         context_dict = {}
         context_dict['properties'] = property_list
         context_dict['lettingAgents'] = lettingagent_list
+        context_dict['city'] = city_list
 
         response = render(request, 'rent_live/index.html', context=context_dict)
 
@@ -46,12 +48,48 @@ class SearchResultView(View):
         return HttpResponse("This is the search result page, which will show the search results for each search.")
 
 class CityView(View):
-    def get(self, request):
-        return HttpResponse("This is the City page, will the information on the city's letting agents and properties.")
+    def get_city_details(self, cityname):
+        context_dict = {}
+
+        try:
+            city = City.objects.get(slug=cityname)
+            rental_properties = Rental_Property.objects.filter(city=cityname)
+
+            context_dict['city'] = city
+            context_dict['properties'] = rental_properties
+        except City.DoesNotExist:
+            city = None
+            rental_properties = None
+
+        return context_dict
+
+    
+    def get(self, request, cityname):
+        context_dict = self.get_city_details(cityname)
+        
+        response = render(request, 'rent_live/city.html', context=context_dict)
+        return response
+
 
 class Rental_PropertyView(View):
-    def get(self, request):
-        return HttpResponse("This is the page containing different rental properties")
+    def get_rental_property(self, rental_property_name_slug):
+        context_dict = {}
+
+        try:
+            rental_property = Rental_Property.objects.get(slug=rental_property_name_slug)
+            #agents = LettingAgent.objects.get(name=rental_property)
+
+            context_dict['property'] = rental_property
+        except Rental_Property.DoesNotExist:
+            context_dict['property'] = None
+        
+        return context_dict
+   
+    def get(self, request, rental_property_name_slug):
+        context_dict = self.get_rental_property(rental_property_name_slug)
+
+        response = render(request, 'rent_live/rentalproperty.html', context=context_dict)
+        return response
 
 class PropertyView(View):
     def get(self, request):
@@ -62,8 +100,21 @@ class LettingAgentsView(View):
         return HttpResponse("This is the page detailing different letting agents")
 
 class LettingAgentView(View):
-    def get(self, request):
-        return HttpResponse("This is the page for a specific letting agent")
+    def get_agent(self, letting_agent_name_slug):
+        context_dict = {}
+
+        try:
+            letting_agent = LettingAgent.objects.get(slug=letting_agent_name_slug)
+            context_dict['agent'] = letting_agent
+        except LettingAgent.DoesNotExist:
+            context_dict['agent'] = None
+        
+        return context_dict
+   
+    def get(self, request, letting_agent_name_slug):
+        context_dict = self.get_agent(letting_agent_name_slug)
+        
+        return render(request, 'rent_live/lettingagentpage.html', context=context_dict)
 
 class LACommentsView(View):
     def get(self, request):
@@ -104,6 +155,39 @@ class RegisterView(View):
             print(user_form.errors, profile_form.errors)
 
         response = render(request, 'rent_live/register.html', context={'user_form': user_form, 'profile_form':profile_form,'registered':registered})
+        return response
+
+class LettingAgentRegisterView(View):
+    def get(self, request):
+        registered = False
+        agent_form = AgentProfileForm()
+        user_form = UserForm()
+
+        response = render(request, 'rent_live/lettingagentregister.html', context={'agent_form': agent_form, 'user_form': user_form, 'registered': registered})
+        return response
+
+    def post(self, request):
+        registered = False
+        user_form = UserForm(request.POST)
+        agent_form = AgentProfileForm(request.POST)
+
+        if user_form.is_valid() and agent_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+
+            agent = agent_form.save(commit=False)
+            agent.user = user
+
+            if 'logo' in request.FILES:
+                agent.logo = request.FILE['logo']
+            
+            agent.save()
+            registered = True
+        else:
+            print(user_form.errors, agent_form.errors)
+        
+        response = render(request, 'rent_live/lettingagentregister.html', context={'agent_form': agent_form, 'user_form': user_form, 'registered': registered})
         return response
 
 
@@ -174,7 +258,7 @@ class UserPageView(View):
         
         context_dict = {'user_profile': user_profile,'selected_user': user,'form': form}
         
-        return render(request, 'rango/profile.html', context_dict)
+        return render(request, 'rent_live/profile.html', context_dict)
 
 class UserMessagesView(View):
     def get(self, request):

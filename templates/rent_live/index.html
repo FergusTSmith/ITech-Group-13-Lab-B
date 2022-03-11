@@ -20,29 +20,30 @@
 	<input type="search" id="search-input" class="form-control ds-input" placeholder="Search Your City..."/>
 </div>
 
-<div>
+<div class = "body">
 	<p><strong>Recommended Rooms</strong></p>
 	<hr/>
-
+	<div class = "rooms">
 	{% if properties %}
 		<ul>
 		{% for property in properties %}
-			<li>{{ property.name }} , {{ property.address }}</li>
+			<li><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
 		{% endfor %}
 		</ul>
 	{% else %}
 		No properties have been uploaded yet!
 	{% endif %}
 
+
 	<hr/>
 
-	<strong>Recommended Letting Agents</strong>
+	<p><strong>Recommended Letting Agents</strong><p>
 	<hr/>
 
 	{% if lettingAgents %}
 		<ul>
 		{% for agent in lettingAgents %}
-			<li>{{ agent.name }} , {{ agent.email }}</li>
+			<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }} , {{ agent.email }}</a></li>
 		{% endfor %}
 		</ul>
 	{% else %}

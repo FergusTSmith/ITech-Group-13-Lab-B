@@ -15,13 +15,15 @@
 				<li><a href="{% url 'rent_live:index' %}">Else, click here to visit your profile!</a></li>
 			</ul>
 	{% else %}
-		<p>Please register by filling in your information below</p><br />
+		<p>Please register by filling in your information below.</p>
+		<p>Are you a letting agent? If so, register<a href="{%url 'rent_live:lettingagentregister' %}">here</a></p>
+		<br />
 		<form method="post" action=".">
 			{% csrf_token %}
 
 			{{ form.as_p }}
 
-			<input type="submit"name="submit"value="Register"/>
+			<input class = 'register' type="submit"name="submit"value="Register"/>
 		</form>
 	{% endif %}
 

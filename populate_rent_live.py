@@ -39,16 +39,16 @@ def populate():
 
     cities = [
         {'name': 'Glasgow',
-        'uniqueName': 'GLA',
+        'uniqueName': 'gla',
         'description': 'Scotlands largest city',
         'categories': {'landlord', 'agency', 'agent'}
         },
         {'name': 'Edinburgh',
-        'uniqueName': 'EDI',
+        'uniqueName': 'edi',
         'description': 'Scotlands capital city',
         'categories': {'landlord', 'agency', 'agent'}
         },{'name': 'Dundee',
-        'uniqueName': 'DND',
+        'uniqueName': 'dnd',
         'description': 'A city',
         'categories': {'landlord', 'agency', 'agent'}
         },
@@ -58,7 +58,7 @@ def populate():
         {'name': '123 Fake St',
         'address': '123 Fake St, Glasgow, G11 1A1',
         'description': '1 bedroom flat in Southside',
-        'city': 'GLA',
+        'city': 'gla',
         'lettingAgent': 'Mary Fergusson',
         'price': 400,
         'size': 2,
@@ -67,7 +67,7 @@ def populate():
         {'name': '321 Fake Av',
         'address': '321 Fake Av, Edinburgh, EH12 1H1',
         'description': '1 bedroom flat in Morningside',
-        'city': 'EDI',
+        'city': 'edi',
         'lettingAgent': 'John Davidson',
         'price': 200,
         'size': 4,
@@ -76,7 +76,7 @@ def populate():
         {'name': '445 Unreal St',
         'address': '445 Unreal St, Glasgow, G22 3J2',
         'description': '1 bedroom flat in West End',
-        'city': 'GLA',
+        'city': 'gla',
         'lettingAgent': 'Dave Smith',
         'price': 800,
         'size': 6,

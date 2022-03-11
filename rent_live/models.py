@@ -25,6 +25,11 @@ class LettingAgent(models.Model):
     #category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     city = models.CharField(max_length=3)
     logo = models.ImageField(upload_to='logo_images', blank=True)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(LettingAgent, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -36,6 +41,12 @@ class City(models.Model):
     description = models.CharField(max_length=500)
     #categories = models.ForeignKey(Category, on_delete=models.CASCADE)
     categories = models.CharField(max_length=50)
+
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.uniqueName)
+        super(City, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.uniqueName
@@ -86,7 +97,7 @@ class UserProfile(models.Model):
     profilePic = models.ImageField(upload_to='profile_images', blank=True)
     totallikes = models.IntegerField(default=0)
     totalComments = models.IntegerField(default=0)
-    isAgent = models.BooleanField(default=False)
+    #isAgent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username
