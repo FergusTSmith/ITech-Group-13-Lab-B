@@ -146,8 +146,8 @@ class RegisterView(View):
             profile = profile_form.save(commit=False)
             profile.user = user
 
-            if 'picture' in request.FILES:
-                profile.picture = request.FILE['picture']
+            if 'ProfilePic' in request.FILES:
+                profile.profilePic = request.FILES['ProfilePic']
 
             profile.save()
             registered = True

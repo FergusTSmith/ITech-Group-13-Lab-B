@@ -2,14 +2,14 @@
 {% load staticfiles %}
 
 {% block title_block %}
-	{{ selected_user.username }}
+	{{ user.username }}
 {% endblock %}
 
 {% block body_block %}
 <div>
 	<div>
-		{% if selected_user.profilePic %}
-		<img src="{{ MEDIA_URL }}{{ user_profile.profilePic}}" width="250"height="250"alt="User profile image - {{ selected_user.usernam}}">
+		{% if user_profile.profilePic %}
+		<img src="{{ MEDIA_URL }}{{ user_profile.profilePic }}" width="250"height="250"alt="User profile image - {{ selected_user.username}}">
 		{% else %}
 		<img src="https://lorempixel.com/300/300/people/" width="250" height="250" alt="Blank Profile Image" />
 		{% endif %}
