@@ -227,7 +227,7 @@ class UserPageView(View):
             return None
         
         user_profile = UserProfile.objects.get_or_create(user=user)[0]
-        form = UserProfileForm({'accessibleUser': user_profile.accessibleUser,'isAgent': user_profile.isAgent,'profilePic': user_profile.profilePic})
+        form = UserProfileForm({'accessibleUser': user_profile.accessibleUser,'profilePic': user_profile.profilePic})
 
         return (user, user_profile, form)
     
