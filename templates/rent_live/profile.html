@@ -17,12 +17,20 @@
 	<div>
 		<p>Name: {{ selected_user.username }}</p>
 		<p>Email: {{ selected_user.email }}</p>
-		<p>Date Joined: {{ selected_user.datejoined }}</p>
-		<p>Likes: {{ selected_user.likes }}</p>
+		<p>Date Joined: {{ user_profile.datejoined }}</p>
+		<p>Likes: {{ user_profile.totallikes }}</p>
+
+		{% if user_profile.superUser == True %}
+		<p>Superuser</p>
+		{% endif %}
 
 	<hr/>
 
 	<!--- User is an Agent --->
+
+	{% if is_agent %}
+		<p>Looking to add a new room to Rent Live? Click <a href="{% url 'rent_live:addProperty' %}">Here</a></p>/
+	{% endif %}
 
 	</div>
 

@@ -1,0 +1,24 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Rent Live - Add a New Property
+{% endblock %}
+
+{% block body_block %}
+	<h1>Add a New Property - RentLive</h1>
+
+	<p>Please register by filling in your information below</p><br />
+	<form id="rental_form" method="post" action="{% url 'rent_live:addProperty' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			{{ rental_form.as_p }}
+
+			<input type="submit"name="submit"value="Add Property"/>
+		</form>
+
+	{% if added %}
+		TEST
+	{% endif %}
+
+{% endblock %}

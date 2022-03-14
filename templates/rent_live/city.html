@@ -9,10 +9,26 @@
 	<h1> {{ city.name }} </h1>
 
 	<div class = "Picture-Section">
-	{% if city.picture %}
-		<img src="{{ MEDIA_URL }}{{ city.picture }}" width="250"height="250"alt="Image of the city of {{ city.name }}">
-	{% else %}
-		<img src="https://lorempixel.com/300/300/people/" width="250" height="250" alt="Blank City Image" />
+	{% if city.name == 'Glasgow' %}
+		<img class = "city-picture" src="{% static 'images/glasgow.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'Edinburgh' %}
+		<img class = "city-picture" src="{% static 'images/edinburgh.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'Inverness' %}
+		<img class = "city-picture" src="{% static 'images/inverness.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'Dundee' %}
+		<img class = "city-picture" src="{% static 'images/dundee.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'Aberdeen' %}
+		<img class = "city-picture" src="{% static 'images/aberdeen.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'Stirling' %}
+		<img class = "city-picture" src="{% static 'images/stirling.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'Perth' %}
+		<img class = "city-picture" src="{% static 'images/perth.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'Dumfermline' %}
+		<img class = "city-picture" src="{% static 'images/dumfermline.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'StAndrews' %}
+		<img class = "city-picture" src="{% static 'images/standrews.jpg' %}" alt="Glasgow"/>
+	{% elif city.name == 'Dumfries' %}
+		<img class = "city-picture" src="{% static 'images/dumfries.jpg' %}" alt="Glasgow"/>
 	{% endif %}
 	</div>
 
@@ -36,6 +52,18 @@
 		{% endif %}
 
 		</ul>
+	</div>
+
+	<div class="CityAgents">
+		{% if agents %}
+			<ul class="agents">
+				{% for agent in agents %}
+					<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }} , {{ agent.email }}</a></li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			No letting agents have been uploaded for this city
+		{% endif %}
 	</div>
 
 

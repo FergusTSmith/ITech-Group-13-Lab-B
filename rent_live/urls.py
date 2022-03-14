@@ -24,4 +24,5 @@ urlpatterns = [
     path('<username>/messages/', views.UserMessagesView.as_view(), name='messages'),
     path('<username>/comments/', views.UserCommentsView.as_view(), name='usercomments'),
     path('<username>/rentals/', views.UserRentalsView.as_view(), name='userrentals'),
+    path('addProperty/', views.AddRentalView.as_view(), name='addProperty'),
 ]

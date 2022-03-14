@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rent_live.models import UserProfile, LettingAgent
+from rent_live.models import UserProfile, LettingAgent, Rental_Property
 from django import forms
 
 
@@ -20,3 +20,9 @@ class AgentProfileForm(forms.ModelForm):
     class Meta:
         model = LettingAgent
         fields = ('name', 'description', 'phone', 'email', 'city', 'logo')
+
+
+class RentalPropertyForm(forms.ModelForm):
+    class Meta:
+        model = Rental_Property
+        fields = ('name', 'address', 'description', 'picture', 'city', 'lettingAgent', 'price', 'size', 'state')
