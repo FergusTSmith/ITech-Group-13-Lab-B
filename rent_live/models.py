@@ -94,7 +94,7 @@ class UserProfile(models.Model):
     datejoined = models.DateField(auto_now_add=True)
     accessibleUser = models.BooleanField(default=False)
     superUser = models.BooleanField(default=False)
-    profilePic = models.ImageField(upload_to='profile_images', blank=True)
+    profilePic = models.ImageField(upload_to='profile_images/', blank=True)
     totallikes = models.IntegerField(default=0)
     totalComments = models.IntegerField(default=0)
     #isAgent = models.BooleanField(default=False)

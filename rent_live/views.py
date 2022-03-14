@@ -159,11 +159,13 @@ class RegisterView(View):
             profile = profile_form.save(commit=False)
             profile.user = user
 
-            if 'ProfilePic' in request.FILES:
-                profile.profilePic = request.FILES['ProfilePic']
+            if 'profilePic' in request.FILES:
+                profile.profilePic = request.FILES['profilePic']
+                print("test")
 
             profile.save()
             registered = True
+            print("test2")
         else:
             print(user_form.errors, profile_form.errors)
 

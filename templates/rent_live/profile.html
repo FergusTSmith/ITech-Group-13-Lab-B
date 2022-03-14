@@ -9,9 +9,11 @@
 <div>
 	<div>
 		{% if user_profile.profilePic %}
+			<p>TEST</p>
 		<img src="{{ MEDIA_URL }}{{ user_profile.profilePic }}" width="250"height="250"alt="User profile image - {{ selected_user.username}}">
 		{% else %}
 		<img src="https://lorempixel.com/300/300/people/" width="250" height="250" alt="Blank Profile Image" />
+		<p>testfail</p>
 		{% endif %}
 	</div>
 	<div>
