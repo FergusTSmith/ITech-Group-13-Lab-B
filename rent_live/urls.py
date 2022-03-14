@@ -25,4 +25,6 @@ urlpatterns = [
     path('<username>/comments/', views.UserCommentsView.as_view(), name='usercomments'),
     path('<username>/rentals/', views.UserRentalsView.as_view(), name='userrentals'),
     path('addProperty/', views.AddRentalView.as_view(), name='addProperty'),
+    path('profile/edit/<username>', views.EditProfileView.as_view(), name='editprofile'),
+    path('profile/edit/password/', views.ChangePasswordView.as_view(), name='changepassword')
 ]

@@ -2,14 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
 from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile
-from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, RentalPropertyForm
+from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, RentalPropertyForm, ProfileEditForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth import logout
+from django.contrib.auth import logout, update_session_auth_hash
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 
 
 # Create your views here.
@@ -24,8 +25,8 @@ class myss(View):
 
 class IndexView(View):
     def get(self, request):
-        property_list = Rental_Property.objects.order_by('-followers')
-        lettingagent_list = LettingAgent.objects.order_by('-qualityRating')
+        property_list = Rental_Property.objects.order_by('-followers')[:3]
+        lettingagent_list = LettingAgent.objects.order_by('-qualityRating')[:3]
         city_list = City.objects.order_by('name')
 
         context_dict = {}
@@ -306,3 +307,35 @@ class AddRentalView(View):
     
         response = render(request, 'rent_live/addroom.html', context={'rental_form': rental_form, 'added': added})
         return response
+
+class EditProfileView(View):
+    def get(self, request, username):
+        form = ProfileEditForm(instance=request.user)
+
+        response = render(request, 'rent_live/editaccount.html', context={'form': form})
+        return response
+
+    #https://www.youtube.com/watch?v=JmaxoPBvp1M&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=18&ab_channel=MaxGoodridge
+    def post(self, request, username):
+        form = ProfileEditForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('rent_live:index'))
+
+#https://www.youtube.com/watch?v=QxGKTvx-Vvg&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=20&ab_channel=MaxGoodridge
+class ChangePasswordView(View):
+    def get(self, request):
+        form = PasswordChangeForm(user=request.user)
+        return render(request, 'rent_live/changepassword.html', context={'form': form})
+
+        
+    def post(self, request):
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user) #Stops user from being logged out.
+            return redirect(reverse('rent_live:index'))
+        else:
+            return redirect(reverse('rent_live:index'))

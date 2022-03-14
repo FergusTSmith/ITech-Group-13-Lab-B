@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rent_live.models import UserProfile, LettingAgent, Rental_Property
 from django import forms
+from django.contrib.auth.forms import UserChangeForm
 
 
 class UserForm(forms.ModelForm):
@@ -26,3 +27,13 @@ class RentalPropertyForm(forms.ModelForm):
     class Meta:
         model = Rental_Property
         fields = ('name', 'address', 'description', 'picture', 'city', 'lettingAgent', 'price', 'size', 'state')
+
+#https://www.youtube.com/watch?v=D9Xd6jribFU&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=19&ab_channel=MaxGoodridge
+class ProfileEditForm(UserChangeForm):
+    password = None
+
+    class Meta:
+        model = User
+        fields = ('username', 'email',)
+
+    

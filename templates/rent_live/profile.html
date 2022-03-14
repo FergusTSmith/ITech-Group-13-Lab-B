@@ -24,6 +24,10 @@
 		<p>Superuser</p>
 		{% endif %}
 
+		{% if selected_user == user %}
+			<p>Looking to edit your account? Click <a href="{% url 'rent_live:editprofile' user.username %}">Here</a></p>
+		{% endif %}
+
 	<hr/>
 
 	<!--- User is an Agent --->
