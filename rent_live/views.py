@@ -13,6 +13,15 @@ from django.contrib.auth import logout
 
 
 # Create your views here.
+class myss(View):
+    def get(self, request):
+        response = render(request, 'rent_live/html.html')
+
+        return response
+
+
+
+
 class IndexView(View):
     def get(self, request):
         property_list = Rental_Property.objects.order_by('-followers')

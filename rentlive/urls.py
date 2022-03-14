@@ -23,6 +23,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    path('myss/', views.myss.as_view(), name='myss'),
     path('rentlive/', include('rent_live.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('registration.backends.simple.urls'))
