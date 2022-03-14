@@ -24,4 +24,8 @@
 		<p><a href="{% url 'rent_live:changepassword' %}">Change Your Password</a></p>
 	</div>
 
+	<div class="delete-link">
+		<p><a href="{% url 'rent_live:delete' user.username %}">Delete your account</a></p>
+	</div>
+
 {% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Rent Live - Delete Account
+{% endblock %}
+
+{% block body_block %}
+	<h1>Delete User Account - RentLive</h1>
+
+	<p>Are you sure you would like to delete your account? Press the button below to confirm:</p>
+	<br />
+	<form method="post">
+		{% csrf_token %}
+
+		<input type="submit"name="submit"value="Delete Account"/>
+	</form>
+
+{% endblock %}

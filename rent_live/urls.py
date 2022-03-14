@@ -26,5 +26,6 @@ urlpatterns = [
     path('<username>/rentals/', views.UserRentalsView.as_view(), name='userrentals'),
     path('addProperty/', views.AddRentalView.as_view(), name='addProperty'),
     path('profile/edit/<username>', views.EditProfileView.as_view(), name='editprofile'),
-    path('profile/edit/password/', views.ChangePasswordView.as_view(), name='changepassword')
+    path('profile/edit/password/', views.ChangePasswordView.as_view(), name='changepassword'),
+    path('profile/delete/<username>/', views.DeleteUserView.as_view(), name='delete'),
 ]

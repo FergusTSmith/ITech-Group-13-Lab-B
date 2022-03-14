@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+from django.views.generic.edit import DeleteView
 
 
 # Create your views here.
@@ -118,9 +119,12 @@ class LettingAgentView(View):
 
         try:
             letting_agent = LettingAgent.objects.get(slug=letting_agent_name_slug)
+            agent_properties = Rental_Property.objects.filter(lettingAgent = letting_agent)
             context_dict['agent'] = letting_agent
+            context_dict['properties'] = agent_properties
         except LettingAgent.DoesNotExist:
             context_dict['agent'] = None
+            context_dict['properties'] = None
         
         return context_dict
    
@@ -341,3 +345,16 @@ class ChangePasswordView(View):
             return redirect(reverse('rent_live:index'))
         else:
             return redirect(reverse('rent_live:index'))
+
+#https://stackoverflow.com/questions/33715879/how-to-delete-user-in-django
+class DeleteUserView(DeleteView):
+    def get(self, request, username):
+        model = User
+        success_url = reverse('rent_live:index')
+
+        return render(request, 'rent_live/delete.html', context={})
+    
+    def post(self, request, username):
+        user = User.objects.get(username=username)
+        user.delete()
+        return redirect(reverse('rent_live:index'))

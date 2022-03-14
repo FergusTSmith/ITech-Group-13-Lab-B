@@ -149,11 +149,11 @@ def populate():
     for cat in categories:
         add_category(cat['name'], cat['description'])
 
-    for l in letting_agents:
-        add_agent(l['name'], l['description'], l['phone'], l['email'], l['city'])
-
     for c in cities:
         add_city(c['name'], c['uniqueName'], c['description'])
+
+    for l in letting_agents:
+        add_agent(l['name'], l['description'], l['phone'], l['email'], l['category'], l['city'])
 
     for r in rentals:
         add_rental(r['name'], r['address'], r['description'], r['city'], r['lettingAgent'], r['price'], r['size'], r['followers'], r['state'])
@@ -166,13 +166,13 @@ def add_category(name, description):
     c.save()
     return c
 
-def add_agent(name, description, phone, email, city):
+def add_agent(name, description, phone, email, category, city):
     l = LettingAgent.objects.get_or_create(name=name)
     l[0].description = description
     l[0].phone = phone
     l[0].email = email
-    #l.category = category
-    l[0].city = city
+    l[0].category = Category.objects.get(name=category)
+    l[0].city = City.objects.get(uniqueName=city)
     l[0].save()
     return l[0]
 
@@ -180,7 +180,7 @@ def add_city(name, uniqueName, description):
     c = City.objects.get_or_create(uniqueName=uniqueName)
     c[0].name = name
     c[0].description = description
-    #c[0].categories = categories
+    #c[0].categories = Category.objects.all()
     c[0].save()
     return c[0]
 
@@ -188,8 +188,8 @@ def add_rental(name, address, description, city, lettingAgent, price, size, foll
     r = Rental_Property.objects.get_or_create(address=address)
     r[0].name = name
     r[0].description = description
-    r[0].city = city
-    r[0].lettingAgent = lettingAgent
+    r[0].city = City.objects.get(uniqueName=city)
+    r[0].lettingAgent = LettingAgent.objects.get(name=lettingAgent)
     r[0].price = price
     r[0].size = size
     r[0].followers = followers
