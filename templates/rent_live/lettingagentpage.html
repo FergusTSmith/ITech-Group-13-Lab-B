@@ -6,6 +6,107 @@
 {% endblock %}
 
 {% block body_block %}
+
+
+
+<script type="text/javascript">
+	function GI(id) {
+		return document.getElementById(id);
+	}
+	function infen(var1) {
+		var fentip = new Array("", "waste time", "waste time more", "dislike", "dislike", "normal", "normal", "normal", "like", "like", "fantacy");
+		if (var1 > 0) {
+			GI("pfno").innerHTML = var1 + "scores ";
+			GI("pftip").innerHTML = fentip[var1];
+			GI("currentrating").style.display = "none";
+		}
+		else {
+			GI("pfno").innerHTML = "";
+			GI("pftip").innerHTML = "";
+			GI("currentrating").style.display = "block";
+		}
+	}
+
+	var http_request = false;
+	function makeRequest(url, functionName, httpType, sendData) {
+		http_request = false;
+		if (!httpType) httpType = "POST";
+		if (window.XMLHttpRequest) { // Non-IE...
+			http_request = new XMLHttpRequest();
+			if (http_request.overrideMimeType) {
+				http_request.overrideMimeType('text/plain');
+			}
+		} else if (window.ActiveXObject) { // IE
+			try {
+				http_request = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+				try {
+					http_request = new ActiveXObject("Microsoft.XMLHTTP");
+				} catch (e) { }
+			}
+		}
+		if (!http_request) {
+			alert('failed');
+			return false;
+		}
+		var changefunc = "http_request.onreadystatechange = " + functionName;
+		eval(changefunc);
+		//http_request.onreadystatechange = alertContents;
+		http_request.open(httpType, url, true);
+		http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		http_request.send(sendData);
+	}
+	function getReturnedText() {
+		if (http_request.readyState == 4) {
+			if (http_request.status == 200) {
+				var messagereturn = http_request.responseText;
+				return messagereturn;
+			} else {
+				alert('requests wrong');
+			}
+		}
+	}
+	function EchoReturnedText() {
+		if (http_request.readyState == 4) {
+			if (http_request.status == 200) {
+				var messagereturn = http_request.responseText;
+				if (messagereturn != 'isfail') {
+					var r;
+					r = messagereturn.split('|');
+					if (r.length != 1) {
+						if (r[0] == "8") {
+							alert("success,tks!")
+							GI("pfshi").innerHTML = r[1];
+							GI("pfge").innerHTML = r[2];
+							GI("pfren").innerHTML = r[3];
+							GI("currentrating").style.width = r[4] + "px";
+						}
+					}
+					else {
+						if (messagereturn == "1") {
+							alert("already done")
+						}
+						else if (messagereturn == "2") {
+							alert("failed,try later")
+						}
+						else if (messagereturn == "3") {
+							alert("short time limitted")
+						}
+						else {
+							alert(messagereturn);
+						}
+						//document.getElementById('ajaxarea').innerHTML=messagereturn;
+					}
+				}
+			} else {
+				alert('wrong');
+			}
+		}
+	}
+</script>
+
+
+
 <div>
 	<div>
 		{% if agent.logo %}
@@ -19,18 +120,65 @@
 		<p>Email: {{ agent.email }}</p>
 		<p>Date Joined: {{ agent.datejoined }}</p>
 		<p>Phone Number: {{ agent.phone }}</p>
-		<p>Helpfulness Rating: {{ agent.helpfulnessRating }} </p>
-		<p>Promptness Rating: {{ agent.promptnessRating }} </p>
-		<p>Quality Rating: {{ agent.qualityRating }} </p>
+		<p>Promptness Rating: {{ help_ave }} </p>
+
+			{% if login %}
+		<div id="sitelogo">
+			<span><a id=id id="fff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>
+			<ul class="starrating">
+				<li id="currentrating"></li>
+				<li><a onmouseover="infen(1)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=1&agent_name={{agent.name}}&type=help');" class="star">1</a></li>
+				<li><a onmouseover="infen(2)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=2&agent_name={{agent.name}}&type=help');" class="star2">2</a></li>
+				<li><a onmouseover="infen(3)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=3&agent_name={{agent.name}}&type=help');"class="star3">3</a></li>
+				<li><a onmouseover="infen(4)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=4&agent_name={{agent.name}}&type=help');"class="star4">4</a></li>
+				<li><a onmouseover="infen(5)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=5&agent_name={{agent.name}}&type=help');"class="star5">5</a></li>
+				<li><a onmouseover="infen(6)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=6&agent_name={{agent.name}}&type=help');" class="star6">6</a></li>
+				<li><a onmouseover="infen(7)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=7&agent_name={{agent.name}}&type=help');" class="star7">7</a></li>
+				<li><a onmouseover="infen(8)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=8&agent_name={{agent.name}}&type=help');" class="star8">8</a></li>
+				<li><a onmouseover="infen(9)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=9&agent_name={{agent.name}}&type=help');" class="star9">9</a></li>
+				<li><a onmouseover="infen(10)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=10&agent_name={{agent.name}}&type=help');" class="star10">10</a></li>
+			</ul>
+			<span id="pftip"></span>
+			<span id="pfno"></span>
+			<p><span id="pfshi">{{help_ave}}</span><!--span id="pfge"--></span><span class="no">(<label id="pfren">{{help_num}}</label>done)</span></p>
+		</div>
+			{% endif %}
+
+		<p>Quality Rating: {{ quality_ave}} </p>
+
+		{% if login %}
+		<div id="sitelogo">
+			<span><a id=id id="fff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>
+			<ul class="starrating">
+				<li id="currentrating"></li>
+				<li><a onmouseover="infen(1)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=1&agent_name={{agent.name}}&type=quality');" class="star">1</a></li>
+				<li><a onmouseover="infen(2)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=2&agent_name={{agent.name}}&type=quality');" class="star2">2</a></li>
+				<li><a onmouseover="infen(3)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=3&agent_name={{agent.name}}&type=quality');" class="star3">3</a></li>
+				<li><a onmouseover="infen(4)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=4&agent_name={{agent.name}}&type=quality');" class="star4">4</a></li>
+				<li><a onmouseover="infen(5)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=5&agent_name={{agent.name}}&type=quality');" class="star5">5</a></li>
+				<li><a onmouseover="infen(6)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=6&agent_name={{agent.name}}&type=quality');" class="star6">6</a></li>
+				<li><a onmouseover="infen(7)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=7&agent_name={{agent.name}}&type=quality');" class="star7">7</a></li>
+				<li><a onmouseover="infen(8)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=8&agent_name={{agent.name}}&type=quality');" class="star8">8</a></li>
+				<li><a onmouseover="infen(9)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=9&agent_name={{agent.name}}&type=quality');" class="star9">9</a></li>
+				<li><a onmouseover="infen(10)" onmouseout="infen(0)" href="javascript:makeRequest('{% url 'rent_live:rating' %}','EchoReturnedText','POST','user={{user}}&_=10&agent_name={{agent.name}}&type=quality');" class="star10">10</a></li>
+			</ul>
+			<span id="pftip"></span>
+			<span id="pfno"></span>
+			<p><span id="pfshi">{{quality_ave}}</span><!--span id="pfge"--></span><span class="no">(<label id="pfren">{{quality_num}}</label>done)</span></p>
+		</div>
+			{% endif %}
 		<p>City: {{ agent.city }}</p>
 
-	<hr/>
+		<hr />
 
-	<!--- User is an Agent --->
+		<!--- User is an Agent --->
 
 	</div>
 
+
+
 	<div>
+
 
 	<!--- This is the User's profile --->
 		{% if selected_user == user %}
@@ -42,6 +190,7 @@
 		{% else %}
 			<a href="{% url 'rent_live:index' %}">{{ agent.name }}'s Rooms</a>
 			<a href="{% url 'rent_live:index' %}">{{ agent.name }}'s Comments</a>
+
 		{% endif %}
 	<div>
 

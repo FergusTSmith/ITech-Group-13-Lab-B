@@ -1,3 +1,6 @@
+
+</head>
+
 {% extends 'rent_live/base.html' %}
 {% load staticfiles %}
 
@@ -6,50 +9,51 @@
 {% endblock %}
 
 {% block body_block %}
-<div class = "Welcome">
-	{% if user.is_authenticated %}
-		<p>Welcome back, {{ user.username }}</p>
-	{% else %}
-		<p>New to Rent Live? Sign Up <a href="{% url 'rent_live:register' %}">here</a></p> 
-	{% endif %}
-	<h1>Find A Flat</h1>
-	<p>Rent Live has collected 999+ rooms for renting</p>
+<div class="Welcome">
+    {% if user.is_authenticated %}
+    <p>Welcome back, {{ user.username }}</p>
+    {% else %}
+    <p>New to Rent Live? Sign Up <a href="{% url 'rent_live:register' %}">here</a></p>
+    {% endif %}
+    <h1>Find A Flat</h1>
+    <p>Rent Live has collected 999+ rooms for renting</p>
 </div>
 
-<div class = "Search">
-	<input type="search" id="search-input" class="form-control ds-input" placeholder="Search Your City..."/>
+<div class="Search">
+    <input type="search" id="search-input" class="form-control ds-input" placeholder="Search Your City..." />
 </div>
 
-<div class = "body">
-	<p><strong>Recommended Rooms</strong></p>
-	<hr/>
-	<div class = "rooms">
-	{% if properties %}
-		<ul>
-		{% for property in properties %}
-			<li><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
-		{% endfor %}
-		</ul>
-	{% else %}
-		No properties have been uploaded yet!
-	{% endif %}
+<div class="body">
+    <p><strong>Recommended Rooms</strong></p>
+    <hr />
+    <div class="rooms">
+        {% if properties %}
+        <ul>
+            {% for property in properties %}
+            <li><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
+
+            {% endfor %}
+        </ul>
+        {% else %}
+        No properties have been uploaded yet!
+        {% endif %}
 
 
-	<hr/>
+        <hr />
 
-	<p><strong>Recommended Letting Agents</strong><p>
-	<hr/>
+        <p><strong>Recommended Letting Agents</strong><p>
+            <hr />
 
-	{% if lettingAgents %}
-		<ul>
-		{% for agent in lettingAgents %}
-			<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }} , {{ agent.email }}</a></li>
-		{% endfor %}
-		</ul>
-	{% else %}
-		No letting agents have been uploaded yet!
-	{% endif %}	
-	
-</div>
-{% endblock %}
+            {% if lettingAgents %}
+            <ul>
+                {% for agent in lettingAgents %}
+                <li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }} , {{ agent.email }} </a>&nbsp;&nbsp;</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            No letting agents have been uploaded yet!
+            {% endif %}
+
+    </div>
+    {% endblock %}
 
