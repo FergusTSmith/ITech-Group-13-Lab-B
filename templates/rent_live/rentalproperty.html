@@ -8,21 +8,27 @@
 {% block body_block %}
 	<h1> {{ property.name }} </h1>
 
+	<div class="RentalPicture">
+		{% if property.picture %}
+			<img src="{{ MEDIA_URL }}{{ property.picture }}" width="200"height="200"alt="Rental Property Image - {{ property.picture }}"/>
+		{% else %}
+			<img src="{% static 'images/BlankProperty.jpg' %}" width="200"height="200"alt="Blank Property Picture"/>
+		{% endif %}
+	</div>
 
 
 	<ul class = 'RentalDetails'>
-		<li>Location: {{ property.address}}</li>
-		<li>Square meters: {{ property.size }}m^2</li>
-		<li>Cleanliness Rating: {{ property.cleanlinessRating }}</li>
-		<li>Accuracy Rating: {{ property.accuracyRating }}</li>
-		<li>Enjoyability Rating: {{ property.enjoyabilityRating }}</li>
-		<li>Followers: {{ property.followers }}</li>
-		<li>Agent: {{ property.lettingAgent }}</li>
+		<li class="rental">Location: {{ property.address}}</li>
+		<li class="rental">Square meters: {{ property.size }}m^2</li>
+		<li class="rental">Cleanliness Rating: {{ property.cleanlinessRating }}</li>
+		<li class="rental">Accuracy Rating: {{ property.accuracyRating }}</li>
+		<li class="rental">Enjoyability Rating: {{ property.enjoyabilityRating }}</li>
+		<li class="rental">Followers: {{ property.followers }}</li>
+		<li class="rental">Agent: <a href="{% url 'rent_live:agent' property.lettingAgent.slug %}">{{ property.lettingAgent }}</a></li>
+		<li class="rental">Price: £{{ property.price }}</li>
 	</ul>
+	<br/><br/>
 
-	<div class ="price">
-		<p class = "pricedetails"> £{{ property.price }}</p>
-	</div>
 
 	<hr/>
 	<div class="propertydescription">

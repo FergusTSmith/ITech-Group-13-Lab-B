@@ -112,13 +112,13 @@
 		{% if agent.logo %}
 		<img src="{{ MEDIA_URL }}{{ agent.logo}}" width="250"height="250"alt="Logo for {{ agent.name }}">
 		{% else %}
-		<img src="https://lorempixel.com/300/300/people/" width="250" height="250" alt="Blank Profile Image" />
+		<img src="{% static 'images/BlankPerson.jpg' %}" width="200"height="200"alt="Blank Profile Picture"/>
 		{% endif %}
 	</div>
 	<div>
 		<p>Name: {{ agent.name }}</p>
 		<p>Email: {{ agent.email }}</p>
-		<p>Date Joined: {{ agent.datejoined }}</p>
+		<p>Date Joined: {{ agent.dateFounded }}</p>
 		<p>Phone Number: {{ agent.phone }}</p>
 		<p>Promptness Rating: {{ help_ave }} </p>
 
@@ -171,32 +171,24 @@
 
 		<hr />
 
-		<!--- User is an Agent --->
-
 	</div>
 
-
-
-	<div>
-
-
-	<!--- This is the User's profile --->
-		{% if selected_user == user %}
-			<a href="{% url 'rent_live:index' %}">My Followed Rooms</a>
-			<a href="{% url 'rent_live:index' %}">My Messages</a>
-			<a href="{% url 'rent_live:index' %}">My Comments</a>
-
-		<!--- user is viewing another profile --->
+	<div class = "agentRooms">
+		<li><a class = "agentlinks" href="{% url 'rent_live:index' %}">{{ agent.name }}'s Rooms</a></li>
+		{% if properties %}
+			{% for property in properties %}
+				<li><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
+			{% endfor %}
 		{% else %}
-			<a href="{% url 'rent_live:index' %}">{{ agent.name }}'s Rooms</a>
-			<a href="{% url 'rent_live:index' %}">{{ agent.name }}'s Comments</a>
-
+			<p> This Agent does not have any properties uploaded</p>
 		{% endif %}
+	</div>
+	<hr/>
+
+		<li><a class = "agentlinks" href="{% url 'rent_live:index' %}">{{ agent.name }}'s Comments</a></li>
 	<div>
 
 	<div>
-
-	<!--- user is viewing another profile --->
 
 </div>
 {% endblock %}

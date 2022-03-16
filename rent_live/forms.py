@@ -20,7 +20,7 @@ class UserProfileForm(forms.ModelForm):
 class AgentProfileForm(forms.ModelForm):
     class Meta:
         model = LettingAgent
-        fields = ('name', 'description', 'phone', 'city', 'logo')
+        fields = ('name', 'email', 'description', 'phone', 'city', 'logo', 'category', 'dateFounded')
         #https://www.youtube.com/watch?v=ke1IIHDwCIk
         #widgets = ('dateFounded', forms.DateInput(attrs='type':'date'))
 

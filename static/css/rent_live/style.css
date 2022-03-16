@@ -112,3 +112,29 @@ strong.LAHeading {
 .register{
 	text-align: center;
 }
+
+.Room-container {
+	display: grid;
+	column-gap: 50px;
+}
+
+.Room-item {
+	float: left;
+}
+
+.RentalPicture {
+	float: left;
+}
+
+.RentalDetails{
+	text-align: left;
+}
+
+li.rental {
+	text-align: left;
+}
+
+a.agentlinks {
+	text-align: center;
+	
+}

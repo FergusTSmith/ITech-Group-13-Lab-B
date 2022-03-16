@@ -28,4 +28,7 @@ urlpatterns = [
     path('profile/edit/<username>', views.EditProfileView.as_view(), name='editprofile'),
     path('profile/edit/password/', views.ChangePasswordView.as_view(), name='changepassword'),
     path('profile/delete/<username>/', views.DeleteUserView.as_view(), name='delete'),
+    path('landlords/', views.LandLordView.as_view(), name='landlords'),
+    path('agencies/', views.AgencyView.as_view(), name='agencies'),
+    path('agents/', views.AgentView.as_view(), name='agents'),
 ]

@@ -1,0 +1,28 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	{{ agent.name }}
+{% endblock %}
+
+{% block body_block %}
+<div>
+	<h1>Agents</h1>
+	<p>Below is a list of the different agents present on RentLive</p>
+	<hr/>
+
+	{% if agents %}
+		{% for agent in agents %}
+			<p>Name: {{ agent.name }}</p>
+			<p>Email: {{ agent.email }}</p>
+			<p>Helpfulness Rating: {{ agent.helpfulnessRating }}</p>
+			<p>Promptness Rating: {{ agent.promptnessRating }}</p>
+			<p>Quality Rating: {{ agent.qualityRating }}</p>
+			<p>To visit their page, click <a href="{% url 'rent_live:agent' agent.slug %}">here</a></p>
+
+			<hr/>
+		{% endfor %}
+	{% endif %}
+
+</div>
+{% endblock %}

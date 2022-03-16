@@ -53,12 +53,15 @@
 
 		</ul>
 	</div>
+	<hr/>
 
 	<div class="CityAgents">
+		<p><Strong>Agents, Landlords and Agencies in this area</Strong></p>
+
 		{% if agents %}
 			<ul class="agents">
 				{% for agent in agents %}
-					<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }} , {{ agent.email }}</a></li>
+					<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }}</a>, {{ agent.email }} - This individual is a {{ agent.category }}</li>
 				{% endfor %}
 			</ul>
 		{% else %}

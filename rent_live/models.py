@@ -22,7 +22,7 @@ class LettingAgent(models.Model):
     helpfulnessRating = models.IntegerField(default=0)
     promptnessRating = models.IntegerField(default=0)
     qualityRating = models.IntegerField(default=0)
-    #category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     city = models.CharField(max_length=3)
     logo = models.ImageField(upload_to='logo_images', blank=True)
     slug = models.SlugField(unique=True)
@@ -44,8 +44,8 @@ class City(models.Model):
     uniqueName = models.CharField(max_length=3, unique=True)
     picture = models.ImageField(upload_to='city_images', blank=True)
     description = models.CharField(max_length=500)
-    #categories = models.ForeignKey(Category, on_delete=models.CASCADE)
-    categories = models.CharField(max_length=50)
+    categories = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    #categories = models.CharField(max_length=50)
 
     slug = models.SlugField(unique=True)
 
@@ -59,19 +59,40 @@ class City(models.Model):
     class Meta:
         verbose_name_plural = 'Cities'
 
+class LettingAgent(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
+    dateFounded = models.DateField(blank=True, null=True)
+    phone = models.CharField(max_length=15)
+    email = models.CharField(max_length=50)
+    helpfulnessRating = models.IntegerField(default=0)
+    promptnessRating = models.IntegerField(default=0)
+    qualityRating = models.IntegerField(default=0)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
+    logo = models.ImageField(upload_to='logo_images', blank=True)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(LettingAgent, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
 class Rental_Property(models.Model):
     NAME_MAX_LENGTH = 100
-    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
     address = models.CharField(max_length=500, unique=True)
     description = models.CharField(max_length=500)
-    picture = models.ImageField(upload_to='property_images', blank=True)
+    picture = models.ImageField(upload_to='property_images/', blank=True)
     cleanlinessRating = models.IntegerField(default=0)
     accuracyRating = models.IntegerField(default=0)
     enjoyabilityRating = models.IntegerField(default=0)
-    #city = models.ForeignKey(City, on_delete=models.CASCADE)
-    city = models.CharField(max_length=3)
-    #lettingAgent = models.ForeignKey(LettingAgent, on_delete=models.CASCADE)
-    lettingAgent = models.CharField(max_length=20)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
+    #city = models.CharField(max_length=3)
+    lettingAgent = models.ForeignKey(LettingAgent, on_delete=models.CASCADE, null=True)
+    #lettingAgent = models.CharField(max_length=20)
     price = models.IntegerField(default=0)
     size = models.IntegerField(default=0)
     followers = models.IntegerField(default=0)

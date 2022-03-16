@@ -52,8 +52,13 @@
 			{% endblock %}
 		</div>
 	</body>
-</html>
+
 
 <footer>
+	<p><a href="{% url 'rent_live:landlords' %}">Landlords</a></p>
+	<p><a href="{% url 'rent_live:agencies' %}">Agencies</a></p>
+	<p><a href="{% url 'rent_live:agents' %}">Agents</a></p>
 	<p>This site has been developed by <a href="{% url 'rent_live:about' %}">ITech Group 13</a></p>
 </footer>
+
+</html>

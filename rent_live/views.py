@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
+from django.views.generic.edit import DeleteView
 from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile
 from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm
 from django.contrib.auth import authenticate, login, logout
@@ -152,13 +153,18 @@ class CityView(View):
 
         try:
             city = City.objects.get(slug=cityname)
-            rental_properties = Rental_Property.objects.filter(city=cityname)
+            rental_properties = Rental_Property.objects.filter(city=city)
+            agents = LettingAgent.objects.filter(city=city)
 
             context_dict['city'] = city
             context_dict['properties'] = rental_properties
+            context_dict['agents'] = agents
+      
         except City.DoesNotExist:
-            city = None
-            rental_properties = None
+            context_dict['city'] = None
+            context_dict['properties'] = None
+            context_dict['agents'] = None
+        
 
         return context_dict
 
@@ -329,7 +335,7 @@ class LettingAgentRegisterView(View):
             agent.user = user
 
             if 'logo' in request.FILES:
-                agent.logo = request.FILE['logo']
+                agent.logo = request.FILES['logo']
             
             agent.save()
             registered = True
@@ -420,3 +426,95 @@ class UserCommentsView(View):
 class UserRentalsView(View):
     def get(self, request):
         return HttpResponse("This page will show the previously rented properties for a user.")
+
+class AddRentalView(View):
+    def get(self, request):
+        added = False
+        rental_form = RentalPropertyForm()
+
+        response = render(request, 'rent_live/addroom.html', context={'rental_form': rental_form, 'added': added})
+        return response
+
+    def post(self, request):
+        added = False
+        rental_form = RentalPropertyForm(request.POST)
+
+        if rental_form.is_valid():
+            rental = rental_form.save(commit=False)
+
+            if 'picture' in request.FILES:
+                rental.picture = request.FILES['picture']
+
+            rental.save()
+            added = True
+        else:
+            print(rental_form.errors)
+    
+        response = render(request, 'rent_live/addroom.html', context={'rental_form': rental_form, 'added': added})
+        return response
+
+class EditProfileView(View):
+    def get(self, request, username):
+        form = ProfileEditForm(instance=request.user)
+
+        response = render(request, 'rent_live/editaccount.html', context={'form': form})
+        return response
+
+    #https://www.youtube.com/watch?v=JmaxoPBvp1M&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=18&ab_channel=MaxGoodridge
+    def post(self, request, username):
+        form = ProfileEditForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('rent_live:index'))
+
+#https://www.youtube.com/watch?v=QxGKTvx-Vvg&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=20&ab_channel=MaxGoodridge
+class ChangePasswordView(View):
+    def get(self, request):
+        form = PasswordChangeForm(user=request.user)
+        return render(request, 'rent_live/changepassword.html', context={'form': form})
+
+        
+    def post(self, request):
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user) #Stops user from being logged out.
+            return redirect(reverse('rent_live:index'))
+        else:
+            return redirect(reverse('rent_live:index'))
+
+#https://stackoverflow.com/questions/33715879/how-to-delete-user-in-django
+class DeleteUserView(DeleteView):
+    def get(self, request, username):
+        return render(request, 'rent_live/delete.html', context={})
+    
+    def post(self, request, username):
+        user = User.objects.get(username=username)
+        user.delete()
+        return redirect(reverse('rent_live:index'))
+
+class LandLordView(View):
+    def get(self, request):
+        context_dict = {}
+        landlord = Category.objects.get(name='landlord')
+        agents = LettingAgent.objects.filter(category=landlord)
+        context_dict['agents'] = agents
+        return render(request, 'rent_live/landlords.html', context=context_dict)
+
+class AgencyView(View):
+    def get(self, request):
+        context_dict = {}
+        agency = Category.objects.get(name='agency')
+        agents = LettingAgent.objects.filter(category=agency)
+        context_dict['agents'] = agents
+        return render(request, 'rent_live/agencies.html', context=context_dict)
+
+class AgentView(View):
+    def get(self, request):
+        context_dict = {}
+        agent = Category.objects.get(name='agent')
+        agents = LettingAgent.objects.filter(category=agent)
+        context_dict['agents'] = agents
+        return render(request, 'rent_live/agents.html', context=context_dict)
