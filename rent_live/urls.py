@@ -12,6 +12,9 @@ urlpatterns = [
     path('city/<cityname>/', views.CityView.as_view(), name='city'),
     #path('rentalproperty/', views.Rental_PropertyView.as_view(), name='rentalproperty'),
     path('rentalproperty/<slug:rental_property_name_slug>/', views.Rental_PropertyView.as_view(), name='property'),
+
+    path(r'rating/', views.rating.as_view(), name='rating'),
+
     #path('lettingagents/', views.LettingAgentsView.as_view, name='lettingagents'),
     path('lettingagents/<slug:letting_agent_name_slug>/', views.LettingAgentView.as_view(), name='agent'),
     path('lettingagents/<agentname>/comments/', views.LACommentsView.as_view(), name='LAComments'),
