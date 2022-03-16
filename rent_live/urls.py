@@ -13,7 +13,7 @@ urlpatterns = [
     #path('rentalproperty/', views.Rental_PropertyView.as_view(), name='rentalproperty'),
     path('rentalproperty/<slug:rental_property_name_slug>/', views.Rental_PropertyView.as_view(), name='property'),
 
-    path(r'rating/', views.rating.as_view(), name='rating'),
+    path('rating/', views.rating.as_view(), name='rating'),
 
     #path('lettingagents/', views.LettingAgentsView.as_view, name='lettingagents'),
     path('lettingagents/<slug:letting_agent_name_slug>/', views.LettingAgentView.as_view(), name='agent'),
@@ -34,4 +34,5 @@ urlpatterns = [
     path('landlords/', views.LandLordView.as_view(), name='landlords'),
     path('agencies/', views.AgencyView.as_view(), name='agencies'),
     path('agents/', views.AgentView.as_view(), name='agents'),
+    path('search/results/', views.SearchResultView.as_view(), name='searchresults')
 ]

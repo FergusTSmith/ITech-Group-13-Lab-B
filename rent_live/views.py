@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views import View
 from django.views.generic.edit import DeleteView
 from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile
-from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm
+from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, ProfileEditForm, RentalPropertyForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -19,15 +19,22 @@ class IndexView(View):
         property_list = Rental_Property.objects.order_by('-followers')[:3]
         lettingagent_list = LettingAgent.objects.order_by('-qualityRating')[:3]
         city_list = City.objects.order_by('name')
+        all_properties = Rental_Property.objects.order_by('followers')
+        numberOfProperties = 0
+
+        for i in all_properties:
+            numberOfProperties = numberOfProperties+1
 
         context_dict = {}
         context_dict['properties'] = property_list
         context_dict['lettingAgents'] = lettingagent_list
         context_dict['city'] = city_list
+        context_dict['numberOfProperties'] = numberOfProperties
 
         response = render(request, 'rent_live/index.html', context=context_dict)
 
         return response
+
 
 
 class rating(View):
@@ -143,9 +150,26 @@ class SearchView(View):
         response = render(request, 'rent_live/search.html', context={})
         return response
 
+#https://learndjango.com/tutorials/django-search-tutorial
 class SearchResultView(View):
+    def getQuery(self, request):
+        query = self.request.GET.get('search')
+        print(query)
+        city = City.objects.get(name=query)
+
+        result_list = Rental_Property.objects.filter(city = city)
+
+
+        return result_list
+    
     def get(self, request):
-        return HttpResponse("This is the search result page, which will show the search results for each search.")
+        context_dict = {}
+        model = Rental_Property
+        result_list = self.getQuery(request)
+        context_dict['results'] = result_list
+
+        response = render(request, 'rent_live/searchresult.html', context=context_dict)
+        return response
 
 class CityView(View):
     def get_city_details(self, cityname):
@@ -211,6 +235,7 @@ class LettingAgentView(View):
         try:
             letting_agent = LettingAgent.objects.get(slug=letting_agent_name_slug)
             # print(letting_agent.like_help_jsons,letting_agent.like_help_jsons,"*"*200)
+            properties = Rental_Property.objects.filter(lettingAgent=letting_agent)
             try:
                 help_ = str(letting_agent.like_help_jsons)
                 help_num = eval(help_)[0]
@@ -245,6 +270,7 @@ class LettingAgentView(View):
                     context_dict["quality_num"] = 0
                     context_dict["quality_ave"] = 0
             context_dict['agent'] = letting_agent
+            context_dict['properties'] = properties
         except LettingAgent.DoesNotExist:
             context_dict['agent'] = None
         
@@ -392,8 +418,11 @@ class UserPageView(View):
             (user, user_profile, form) = self.get_user_details(username)
         except TypeError:
             return redirect(reverse('rent_live:index'))
+
+        user_email = user.email
+        is_agent = LettingAgent.objects.get(email=user_email)
         
-        context_dict = {'user_profile': user_profile,'selected_user': user,'form': form}
+        context_dict = {'user_profile': user_profile,'selected_user': user,'form': form, 'is_agent': is_agent}
         return render(request, 'rent_live/profile.html', context_dict)
 
     @method_decorator(login_required)
@@ -518,3 +547,4 @@ class AgentView(View):
         agents = LettingAgent.objects.filter(category=agent)
         context_dict['agents'] = agents
         return render(request, 'rent_live/agents.html', context=context_dict)
+

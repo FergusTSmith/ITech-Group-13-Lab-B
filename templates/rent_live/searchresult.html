@@ -1,0 +1,34 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Rent Live - Results
+{% endblock %}
+
+{% block body_block %}
+<div class="SearchTitle">
+	<h1>Search Results</h1>
+</div>
+<lb/>
+
+{% if results %}
+	{% for result in results %}
+		<hr/>
+		<p>{{ result.picture }}</p>
+		<p>{{ result.name }}</p>
+		<p>{{ result.address }}</p>
+		<p>Cleanliness Rating: {{ result.cleanlinessRating}}<p>
+		<p>Quality Rating: {{ result.cleanlinessRating}}<p>
+		<p>Enjoyability Rating: {{ result.enjoyabilityRating}}<p>
+		<p>Click <a href="{% url 'rent_live:property' result.slug %}">Here</a> to view property</p>
+
+	{% endfor %}
+	
+
+{% else %}
+	<p>Test Failed</p>
+{% endif %}
+
+
+{% endblock %}
+

@@ -175,6 +175,7 @@
 
 	<div class = "agentRooms">
 		<li><a class = "agentlinks" href="{% url 'rent_live:index' %}">{{ agent.name }}'s Rooms</a></li>
+		<hr/>
 		{% if properties %}
 			{% for property in properties %}
 				<li><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
@@ -186,6 +187,7 @@
 	<hr/>
 
 		<li><a class = "agentlinks" href="{% url 'rent_live:index' %}">{{ agent.name }}'s Comments</a></li>
+	<hr/>
 	<div>
 
 	<div>

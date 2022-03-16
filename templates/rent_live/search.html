@@ -2,16 +2,29 @@
 {% load staticfiles %}
 
 {% block title_block %}
-	Rent Live - About Us
+	Rent Live - Search
 {% endblock %}
 
 {% block body_block %}
-<div>
-	<p>This page will let you search. This functionality is yet to be developed</p>
+<div class="SearchTitle">
+	<h1>Search Rent Live</h1>
+</div>
+<lb/>
+
+<div class = "Search">
+	<p>Enter in your address below in order to find Rental Properties</p>
+	<input type="search" id="search-input" class="form-control ds-input" placeholder="Address..."/>
+</div>
+
+<hr/>
+
+<div class = "Search">
+	<p>Enter in your address below in order to find Letting Agents</p>
+	<input type="search" id="search-input" class="form-control ds-input" placeholder="Address..."/>
 </div>
 
 
-<a href="http://localhost:8000/myss/">Search Results page</a>
+<a href="http://localhost:8000/myss/">Google Link</a>
 
 
 {% endblock %}
