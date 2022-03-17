@@ -13,6 +13,11 @@
 
 	{% if agents %}
 		{% for agent in agents %}
+			{% if agent.logo %}
+				<img class ="AgentLogo" src="{{ MEDIA_URL }}{{ agent.logo}}" width="75"height="75"alt="Logo for {{ agent.name }}">
+			{% else %}
+				<img class ="AgentLogo" src="{% static 'images/BlankPerson.jpg' %}" width="75"height="75"alt="Blank Profile Picture"/>
+			{% endif %}
 			<p>Name: {{ agent.name }}</p>
 			<p>Email: {{ agent.email }}</p>
 			<p>Helpfulness Rating: {{ agent.helpfulnessRating }}</p>

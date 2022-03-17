@@ -6,67 +6,87 @@
 {% endblock %}
 
 {% block body_block %}
+
 <div class = "Welcome">
 	{% if user.is_authenticated %}
-		<p>Welcome back, {{ user.username }}</p>
+		<h3 class = "Header">Welcome back, {{ user.username }}</h3>
 	{% else %}
-		<p>New to Rent Live? Sign Up <a href="{% url 'rent_live:register' %}">here</a></p> 
+		<h3>New to Rent Live? Sign Up <a href="{% url 'rent_live:register' %}">here</a></h3> 
 	{% endif %}
-	<h1>Find A Flat</h1>
-	<p>Rent Live has collected {{ numberOfProperties }} rooms for renting</p>
 </div>
 
+<div class="Headings">
+	<h1 class = "Heading">Find A Flat</h1>
+	<h4 class = "Heading">Rent Live has collected {{ numberOfProperties }} rooms for renting</h4>
+	<br/>
+</div>
+
+<div class = "LogoContainer">
+	<img class = "MainLogo" src="{% static 'images/MainLogo.png' %}" width="400" height="300" alt="RentLive's main logo"/>
+</div>
+
+<br/>
 <div class = "Search">
+	<p>Quick Search - Enter a City Name to see properties</p>
 	<form action="{% url 'rent_live:searchresults' %}">
 		<input type="search" name="search" class="form-control ds-input" placeholder="Search Your City..."/>
 	</form>
 </div>
 
+<br/>
+<br/>
+<br/>
 
 <div class = "body">
+	<hr/>
 	<p><strong>Recommended Rooms</strong></p>
 	<hr/>
-	<!--- Comment Out
-	<div class = "rooms">
-	{% if properties %}
-		<ul>
-		{% for property in properties %}
-			<li class = "GridRoom"><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
-		{% endfor %}
-		</ul>
-	{% else %}
-		No properties have been uploaded yet!
-	{% endif %}
-	</div>
-	---->
 
 	<div class = "Room-container">
 		{% if properties %}
 			<div class = "Room-item">
 				{% for property in properties %}
-					<li class = "GridRoom"><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
+					{% if property.picture %}
+						<img class = "PropertyImage" src="{{ MEDIA_URL }}{{ property.picture }}" width="75"height="75"alt="Rental Property Image - {{ property.picture }}"/>
+					{% else %}
+						<img class = "PropertyImage" src="{% static 'images/BlankProperty.jpg' %}" width="75"height="75"alt="Blank Property Picture"/>
+					{% endif %}
+					<li class = "GridRoom"><a class="GridRoom" href="{% url 'rent_live:property' property.slug %}">{{ property.name }}</a></li>
+					<p>{{ property.address }}</p>
+					<p>£{{ property.price }} pcm</p>
+					<p>{{ property.lettingAgent.name }}</p>
+					<hr/>
 				{% endfor %}
 			</div>
 		{% else %}
-			No properties have been uploaded yet!
+			<p class = "CityDesc">No properties have been uploaded yet!</p>
 		{% endif %}
 	</div>
 
-
-	<hr/>
-
 	<p><strong>Recommended Letting Agents</strong><p>
 	<hr/>
-
+	<div>
 	{% if lettingAgents %}
 		<ul>
 		{% for agent in lettingAgents %}
-			<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }} , {{ agent.email }}</a></li>
+			{% if agent.logo %}
+				<img class ="AgentLogo" src="{{ MEDIA_URL }}{{ agent.logo}}" width="75"height="75"alt="Logo for {{ agent.name }}">
+			{% else %}
+				<img class ="AgentLogo" src="{% static 'images/BlankPerson.jpg' %}" width="75"height="75"alt="Blank Profile Picture"/>
+			{% endif %}
+
+			<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }}</a></li>
+			<p>{{ agent.email }}</p>
+			<p>{{ agent.phone }}</p>
+			<hr/>
 		{% endfor %}
 		</ul>
 	{% else %}
-		No letting agents have been uploaded yet!
+		<p class = "CityDesc">No letting agents have been uploaded yet!</p>
 	{% endif %}	
+</div>
+
+<br/>
 	
 </div>
 {% endblock %}

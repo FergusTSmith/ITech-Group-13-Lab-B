@@ -155,9 +155,11 @@ class SearchResultView(View):
     def getQuery(self, request):
         query = self.request.GET.get('search')
         print(query)
-        city = City.objects.get(name=query)
-
-        result_list = Rental_Property.objects.filter(city = city)
+        try:
+            city = City.objects.get(name=query)
+            result_list = Rental_Property.objects.filter(city = city)
+        except City.DoesNotExist:
+            result_list = None
 
 
         return result_list
@@ -420,7 +422,10 @@ class UserPageView(View):
             return redirect(reverse('rent_live:index'))
 
         user_email = user.email
-        is_agent = LettingAgent.objects.get(email=user_email)
+        try:
+            is_agent = LettingAgent.objects.get(email=user_email)
+        except LettingAgent.DoesNotExist:
+            is_agent = None
         
         context_dict = {'user_profile': user_profile,'selected_user': user,'form': form, 'is_agent': is_agent}
         return render(request, 'rent_live/profile.html', context_dict)
@@ -547,4 +552,5 @@ class AgentView(View):
         agents = LettingAgent.objects.filter(category=agent)
         context_dict['agents'] = agents
         return render(request, 'rent_live/agents.html', context=context_dict)
+
 
