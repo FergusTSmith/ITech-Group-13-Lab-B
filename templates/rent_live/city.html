@@ -10,65 +10,89 @@
 
 	<div class = "Picture-Section">
 	{% if city.name == 'Glasgow' %}
-		<img class = "city-picture" src="{% static 'images/glasgow.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/glasgow.jpg' %}" width = "400" height = "300" alt="Glasgow" />
 	{% elif city.name == 'Edinburgh' %}
-		<img class = "city-picture" src="{% static 'images/edinburgh.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/edinburgh.jpg' %}" width = "400" height = "300" alt="Glasgow"/>
 	{% elif city.name == 'Inverness' %}
-		<img class = "city-picture" src="{% static 'images/inverness.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/inverness.jpg' %}" width = "400" height = "300" alt="Glasgow"/>
 	{% elif city.name == 'Dundee' %}
-		<img class = "city-picture" src="{% static 'images/dundee.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/dundee.jpg' %}" width = "400" height = "300" alt="Glasgow"/>
 	{% elif city.name == 'Aberdeen' %}
-		<img class = "city-picture" src="{% static 'images/aberdeen.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/aberdeen.jpg' %}"  width = "400" height = "300"alt="Glasgow"/>
 	{% elif city.name == 'Stirling' %}
-		<img class = "city-picture" src="{% static 'images/stirling.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/stirling.jpg' %}"width = "400" height = "300" alt="Glasgow"/>
 	{% elif city.name == 'Perth' %}
-		<img class = "city-picture" src="{% static 'images/perth.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/perth.jpg' %}" width = "400" height = "300"alt="Glasgow"/>
 	{% elif city.name == 'Dumfermline' %}
-		<img class = "city-picture" src="{% static 'images/dumfermline.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/dumfermline.jpg' %}" width = "400" height = "300"alt="Glasgow"/>
 	{% elif city.name == 'StAndrews' %}
-		<img class = "city-picture" src="{% static 'images/standrews.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/standrews.jpg' %}" width = "400" height = "300"alt="Glasgow"/>
 	{% elif city.name == 'Dumfries' %}
-		<img class = "city-picture" src="{% static 'images/dumfries.jpg' %}" alt="Glasgow"/>
+		<img class = "city-picture" src="{% static 'images/dumfries.jpg' %}" width = "400" height = "300"alt="Glasgow"/>
 	{% endif %}
 	</div>
 
 	<hr/>
 
 	<div class="CityDescription">
+		<h3 class="CityDescription">Description</h3>
 		<p>{{ city.description }}</p>
 	</div>
 
 	<hr/>
 
+
 	<div class="CityProperties">
+		<p><Strong>Properties in this City</Strong></p>
+		<hr/>
 		{% if properties %}
 			<ul class="Properties">
 				{% for property in properties %}
-					<li><a href="{% url 'rent_live:property' property.slug %}">{{ property.name }}, {{ property.address }}</a></li>
+					{% if property.picture %}
+						<img class = "PropertyImage" src="{{ MEDIA_URL }}{{ property.picture }}" width="75"height="75"alt="Rental Property Image - {{ property.picture }}"/>
+					{% else %}
+						<img class = "PropertyImage" src="{% static 'images/BlankProperty.jpg' %}" width="75"height="75"alt="Blank Property Picture"/>
+					{% endif %}
+					<li class = "GridRoom"><a class="GridRoom" href="{% url 'rent_live:property' property.slug %}">{{ property.name }}</a></li>
+					<p>{{ property.address }}</p>
+					<p>£{{ property.price }} pcm</p>
+				<hr/>
 				{% endfor %}
 			</ul>
 		{% else %}
-			This city has no properties uploaded
+			<p>This city has no properties uploaded</p>
+			<hr/>
 		{% endif %}
 
 		</ul>
 	</div>
-	<hr/>
 
 	<div class="CityAgents">
-		<p><Strong>Agents, Landlords and Agencies in this area</Strong></p>
+		<p><Strong>Agents, Landlords and Agencies in this City</Strong></p>
+		<hr/>
 
 		{% if agents %}
 			<ul class="agents">
 				{% for agent in agents %}
-					<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }}</a>, {{ agent.email }} - This individual is a {{ agent.category }}</li>
+					{% if agent.logo %}
+				<img class ="AgentLogo" src="{{ MEDIA_URL }}{{ agent.logo}}" width="75"height="75"alt="Logo for {{ agent.name }}">
+			{% else %}
+				<img class ="AgentLogo" src="{% static 'images/BlankPerson.jpg' %}" width="75"height="75"alt="Blank Profile Picture"/>
+			{% endif %}
+
+			<li><a href="{% url 'rent_live:agent' agent.slug %}">{{ agent.name }}</a></li>
+			<p>{{ agent.email }}</p>
+			<p>{{ agent.phone }}</p>
+			<p>This entity is a {{ agent.category }}</p>
+			<hr/>
 				{% endfor %}
 			</ul>
 		{% else %}
-			No letting agents have been uploaded for this city
+			<p>No letting agents have been uploaded for this city</p>
+			<hr/>
 		{% endif %}
 	</div>
-
+<br/>
 
 
 {% endblock %}

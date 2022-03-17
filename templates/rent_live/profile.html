@@ -9,9 +9,9 @@
 <div>
 	<div>
 		{% if user_profile.profilePic %}
-		<img src="{{ MEDIA_URL }}{{ user_profile.profilePic }}" width="200"height="200"alt="User profile image - {{ selected_user.username}}">
+		<img class = "ProfilePicture" src="{{ MEDIA_URL }}{{ user_profile.profilePic }}" width="200"height="200"alt="User profile image - {{ selected_user.username}}">
 		{% else %}
-		<img src="{% static 'images/BlankPerson.jpg' %}" width="200"height="200"alt="Blank Profile Picture"/>
+		<img class = "ProfilePicture" src="{% static 'images/BlankPerson.jpg' %}" width="200"height="200"alt="Blank Profile Picture"/>
 		{% endif %}
 	</div>
 	<div>
@@ -28,7 +28,7 @@
 			<p>Looking to edit your account? Click <a href="{% url 'rent_live:editprofile' user.username %}">Here</a></p>
 		{% endif %}
 
-	<hr/>
+	
 
 	<!--- User is an Agent --->
 
@@ -38,19 +38,22 @@
 
 	</div>
 
-	<div>
+	<div class = "body">
+		<br/>
+	<br/>
+	<hr/>
 
 	<!--- This is the User's profile --->
 		{% if selected_user == user %}
-			<a href="{% url 'rent_live:index' %}">My Followed Rooms</a>
-			<a href="{% url 'rent_live:index' %}">My Messages</a>
-			<a href="{% url 'rent_live:index' %}">My Comments</a>
+			<a class = "PageLink" href="{% url 'rent_live:index' %}">My Followed Rooms</a>
+			<a class = "PageLink" href="{% url 'rent_live:index' %}">My Messages</a>
+			<a class = "PageLink" href="{% url 'rent_live:index' %}">My Comments</a>
 
 		<!--- user is viewing another profile --->
 		{% else %}
-			<a href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Followed Rooms</a>
-			<a href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Messages</a>
-			<a href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Comments</a>
+			<a class = "PageLink" href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Followed Rooms</a>
+			<a class = "PageLink" href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Messages</a>
+			<a class = "PageLink" href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Comments</a>
 		{% endif %}
 	<div>
 
