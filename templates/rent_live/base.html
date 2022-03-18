@@ -7,6 +7,7 @@
 		<link rel="stylesheet"type="text/css"href="{% static 'css/rent_live/style.css' %}">
 		<script src="{% static 'js/jquery-3.3.1.min.js' %}" crossorigin="anonymous"></script>
 		<script src="{% static 'js/rentlive-jquery.js' %}" crossorigin="anonymous"></script>
+		<script src="{% static 'js/rentlive-ajax.js' %}" crossorigin="anonymous"></script>
 		
 
 
@@ -27,8 +28,14 @@
 			</ul>
 		</div>
 
-		<div class = "Side">
-			<ul class = "SideBar">
+		<div class = "Side" id = "Side">
+			<ul class = "SideBar" id="SideBar">
+				<div class = "QuickSearch">
+					<form action="{% url 'rent_live:searchresults' %}">
+						<input type="search" name="search" id="QuickSearch2" class="form-control ds-input" placeholder="Quick Search"/>
+					</form>
+				</div>
+						
 				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'gla' %}">Glasgow</a></li>
 				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'edi' %}">Edinburgh</a></li>
 				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'inv' %}">Inverness</a></li>
@@ -39,6 +46,7 @@
 				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'dfl' %}">Dumfermline</a></li>
 				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'sta' %}">StAndrews</a></li>
 				<li class = "City-Link"><a class = "City-Link" href="{% url 'rent_live:city' 'dfs' %}">Dumfries</a></li>
+
 			</ul>
 		</div>
 

@@ -22,6 +22,7 @@ LOGIN_URL = 'auth_login'
 REGISTRATION_OPEN = True
 REGISTRATION_AUTO_LOGIN = True
 LOGIN_REDIRECT_URL = 'rent_live:index'
+GOOGLE_MAP_API_KEY = 'AIzaSyATIa_k6N2uVvwuH1pnaTlbWEptcxfjPTQ'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     'rent_live',
     'registration',
 ]
+
+#https://django-map-widgets.readthedocs.io/en/latest/widgets/point_field_map_widgets.html
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

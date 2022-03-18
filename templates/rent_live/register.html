@@ -11,7 +11,8 @@
 	{% if registered %}
 		<p>Thank you for registering.<p>
 			<a href="{% url 'rent_live:index' %}">Click here to return to the hompage</a>
-			<a href="{% url 'rent_live:index' %}">Else, click here to visit your profile!</a>
+			<br/>
+			<a href="{% url 'rent_live:login' %}">Else, click here to visit your profile!</a>
 	{% else %}
 		<p>Please register by filling in your information below</p>
 		<p>Are you a letting agent? If so, register <a href="{%url 'rent_live:lettingagentregister' %}">here</a></p>

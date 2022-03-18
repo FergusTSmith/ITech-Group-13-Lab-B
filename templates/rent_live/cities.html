@@ -1,0 +1,9 @@
+<ul>
+	{% if cities %}
+		{% for city in cities %}
+			<li class = "CityName"><a class = "CityName" href="{% url 'rent_live:city' city.uniqueName %}">{{ city.name }}</a></li>
+		{% endfor %}
+	{% else %}
+		<li>No cities are present</li>
+	{% endif %}
+</ul>

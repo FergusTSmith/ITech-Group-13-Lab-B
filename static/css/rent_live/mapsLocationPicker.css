@@ -1,0 +1,25 @@
+MAP_WIDGETS = {
+    "GooglePointFieldWidget": (
+        ("zoom", 15)
+        ("mapCenterLocationName", "glasgow"),
+        ("GooglePlaceAutocompleteOptions", {'componentRestrictions': {'country': 'uk'}}),
+        ("marketFitZoom", 12)
+    )
+}
+
+MAP_WIDGETS = {
+    "GooglePointFieldWidget": (
+        ("zoom", 15)
+        ("mapCenterLocationName", "glasgow"),
+        ("GooglePlaceAutocompleteOptions", {'componentRestrictions': {'country': 'uk'}}),
+        ("marketFitZoom", 12)
+    )
+}
+
+class GoogleMapsForm(forms.ModelForm):
+    class Meta:
+        model = City
+        fields = ("coordinates")
+        widgets = {
+            'coordinates': GooglePointFieldWidget
+        }

@@ -34,5 +34,7 @@ urlpatterns = [
     path('landlords/', views.LandLordView.as_view(), name='landlords'),
     path('agencies/', views.AgencyView.as_view(), name='agencies'),
     path('agents/', views.AgentView.as_view(), name='agents'),
-    path('search/results/', views.SearchResultView.as_view(), name='searchresults')
+    path('search/results/', views.SearchResultView.as_view(), name='searchresults'),
+    path('follow_property/', views.FollowPropertyView.as_view(), name='followproperty'),
+    path('suggestion/', views.CitySuggestionView.as_view(), name='suggestion'),
 ]

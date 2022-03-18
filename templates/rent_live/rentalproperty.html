@@ -16,16 +16,20 @@
 		{% endif %}
 	</div>
 
-
 	<ul class = 'RentalDetails'>
 		<li class="rental">Location: {{ property.address}}</li>
 		<li class="rental">Square meters: {{ property.size }}m^2</li>
 		<li class="rental">Cleanliness Rating: {{ property.cleanlinessRating }}</li>
 		<li class="rental">Accuracy Rating: {{ property.accuracyRating }}</li>
 		<li class="rental">Enjoyability Rating: {{ property.enjoyabilityRating }}</li>
-		<li class="rental">Followers: {{ property.followers }}</li>
 		<li class="rental">Agent: <a href="{% url 'rent_live:agent' property.lettingAgent.slug %}">{{ property.lettingAgent }}</a></li>
 		<li class="rental">Price: £{{ property.price }}</li>
+		<li class="rental" id="FollowerCount">Followers: {{ property.followers }}</li>
+		{% if user.is_authenticated %}
+			<button class="FollowButton" data-categoryid="{{ property.name }}" type="button">Follow</button>
+			<div class="FollowMessage">
+			</div>
+		{% endif %}
 	</ul>
 	<br/><br/>
 

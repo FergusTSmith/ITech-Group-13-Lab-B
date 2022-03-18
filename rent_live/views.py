@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic.edit import DeleteView
-from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile
+from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile#, #UserFollows
 from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, ProfileEditForm, RentalPropertyForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -158,6 +158,8 @@ class SearchResultView(View):
         try:
             city = City.objects.get(name=query)
             result_list = Rental_Property.objects.filter(city = city)
+           
+                
         except City.DoesNotExist:
             result_list = None
 
@@ -552,5 +554,56 @@ class AgentView(View):
         agents = LettingAgent.objects.filter(category=agent)
         context_dict['agents'] = agents
         return render(request, 'rent_live/agents.html', context=context_dict)
+
+#TWD pg 300
+class FollowPropertyView(View):
+    def get(self, request):
+        property_name = request.GET['name']
+
+        try:
+            property = Rental_Property.objects.get(name=property_name)
+        except Rental_Property.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+
+        property.followers = property.followers + 1
+        property.save()
+
+        return HttpResponse(property.followers)
+
+#TWD pg 308
+class CitySuggestionView(View):
+    def get(self, request):
+        if 'suggestion' in request.GET:
+            suggestion = request.GET['suggestion']
+        else:
+            suggestion = ''
+        
+        list_of_cities = get_list_of_cities(max_results=10, starts_with=suggestion)
+
+        if len(list_of_cities) == 0:
+            list_of_cities = City.objects.order_by('name')
+        
+        return render(request, 'rent_live/cities.html', {'cities': list_of_cities})
+
+###### HELPER FUNCTIONS ########
+
+#TWD pg 307
+
+def get_list_of_cities(max_results = 0, starts_with=''):
+    list_of_cities = []
+
+    if starts_with:
+        list_of_cities = City.objects.filter(name__istartswith=starts_with)
+    
+    if max_results >0:
+        if(len(list_of_cities) > max_results):
+            list_of_cities = list_of_cities[:max_results]
+
+    return list_of_cities
+
+def get_list_of_properties(max_results=0, starts_with=' '):
+    return None
 
 

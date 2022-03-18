@@ -18,6 +18,7 @@
 <div class="Headings">
 	<h1 class = "Heading">Find A Flat</h1>
 	<h4 class = "Heading">Rent Live has collected {{ numberOfProperties }} rooms for renting</h4>
+	<p class = "Heading">First time visiting? Find out <a href="{% url 'rent_live:about' %}">About Us</a></p>
 	<br/>
 </div>
 
@@ -29,8 +30,9 @@
 <div class = "Search">
 	<p>Quick Search - Enter a City Name to see properties</p>
 	<form action="{% url 'rent_live:searchresults' %}">
-		<input type="search" name="search" class="form-control ds-input" placeholder="Search Your City..."/>
+		<input type="search" name="search" id="QuickSearch" class="form-control ds-input" placeholder="Search Your City..."/>
 	</form>
+	<div id="CitySearch"></div>
 </div>
 
 <br/>

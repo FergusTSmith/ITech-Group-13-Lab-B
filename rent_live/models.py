@@ -97,6 +97,7 @@ class Rental_Property(models.Model):
     size = models.IntegerField(default=0)
     followers = models.IntegerField(default=0)
     state = models.BooleanField(default=True)
+    followingUsers = models.ManyToManyField(User, null=True)
 
     objects = models.Manager()
 
@@ -139,4 +140,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.user.username
+
+#https://www.gyford.com/phil/writing/2017/03/16/django-admin-map/
+
+#https://stackoverflow.com/questions/71415953/keep-track-of-follow-unfollow-events-django
+#class UserFollows(models.Model):
+   # user = models.ManyToManyField(User, on_delete=models.CASCADE)
+    #followedProperty = models.ManyToManyField(Rental_Property, on_delete=models.CASCADE)
+    #followed = models.BooleanField
+
 

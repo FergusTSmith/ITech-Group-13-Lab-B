@@ -12,5 +12,7 @@ admin.site.register(Rental_Property)
 admin.site.register(Comment)
 admin.site.register(UserProfile)
 
+#https://django-map-widgets.readthedocs.io/en/latest/widgets/point_field_map_widgets.html
+
 
 
