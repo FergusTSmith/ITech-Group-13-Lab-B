@@ -220,6 +220,17 @@ class Rental_PropertyView(View):
    
     def get(self, request, rental_property_name_slug):
         context_dict = self.get_rental_property(rental_property_name_slug)
+        user = request.user
+        is_followed = False
+        try:
+            rental_property = Rental_Property.objects.get(slug=rental_property_name_slug)
+            followers = rental_property.followingUsers.all()
+            for i in followers:
+                if i == user:
+                    is_followed=True
+            context_dict['isFollowed'] = is_followed
+        except Rental_Property.DoesNotExist:
+            context_dict['isFollowed'] = None
 
         response = render(request, 'rent_live/rentalproperty.html', context=context_dict)
         return response
@@ -429,7 +440,12 @@ class UserPageView(View):
         except LettingAgent.DoesNotExist:
             is_agent = None
         
-        context_dict = {'user_profile': user_profile,'selected_user': user,'form': form, 'is_agent': is_agent}
+        try:
+            properties = Rental_Property.objects.filter(followingUsers = user)
+        except Rental_Property.DoesNotExist:
+            properties = None
+        
+        context_dict = {'user_profile': user_profile,'selected_user': user,'form': form, 'is_agent': is_agent, 'properties': properties}
         return render(request, 'rent_live/profile.html', context_dict)
 
     @method_decorator(login_required)
@@ -559,6 +575,7 @@ class AgentView(View):
 class FollowPropertyView(View):
     def get(self, request):
         property_name = request.GET['name']
+        user = request.user
 
         try:
             property = Rental_Property.objects.get(name=property_name)
@@ -568,6 +585,7 @@ class FollowPropertyView(View):
             return HttpResponse(-1)
 
         property.followers = property.followers + 1
+        property.followingUsers.add(user)
         property.save()
 
         return HttpResponse(property.followers)
@@ -586,6 +604,17 @@ class CitySuggestionView(View):
             list_of_cities = City.objects.order_by('name')
         
         return render(request, 'rent_live/cities.html', {'cities': list_of_cities})
+
+class ProfileFollowsView(View):
+    def get(self, request):
+        user = request.user
+        try:
+            properties = Rental_Property.objects.filter(followingUsers = user)
+        except Rental_Property.DoesNotExist:
+            properties = None
+
+        context_dict = {'properties': properties}
+        return render(request, 'rent_live/followedproperties.html', context=context_dict)
 
 ###### HELPER FUNCTIONS ########
 

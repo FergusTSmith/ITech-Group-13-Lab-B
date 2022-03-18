@@ -24,4 +24,22 @@ $(document).ready(function(){
 				$('#CitySearch').html(data);
 			})
 	});
+
+	$('#Followed').click(function(){
+		var user;
+		user = $(this).attr('data-categoryid');
+		$('#ProfileContent').empty();
+		$.get('/rentlive/follows/',
+			function(data){
+				$('#ProfileContent').html(data);
+			})
+	});
+
+	$('#Message').click(function(){
+		$('#ProfileContent').empty();
+	})
+
+	$('#Comments').click(function(){
+		$('#ProfileContent').empty();
+	})
 });

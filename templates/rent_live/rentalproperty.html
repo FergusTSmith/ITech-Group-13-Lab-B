@@ -25,10 +25,15 @@
 		<li class="rental">Agent: <a href="{% url 'rent_live:agent' property.lettingAgent.slug %}">{{ property.lettingAgent }}</a></li>
 		<li class="rental">Price: £{{ property.price }}</li>
 		<li class="rental" id="FollowerCount">Followers: {{ property.followers }}</li>
+		<br/>
 		{% if user.is_authenticated %}
-			<button class="FollowButton" data-categoryid="{{ property.name }}" type="button">Follow</button>
-			<div class="FollowMessage">
-			</div>
+			{% if isFollowed %}
+				<li class="rental">You have followed this property!</li>
+			{% else %}
+				<button class="FollowButton" data-categoryid="{{ property.name }}" type="button">Follow</button>
+				<div class="FollowMessage">
+				</div>
+			{% endif %}
 		{% endif %}
 	</ul>
 	<br/><br/>

@@ -45,9 +45,9 @@
 
 	<!--- This is the User's profile --->
 		{% if selected_user == user %}
-			<a class = "PageLink" href="{% url 'rent_live:index' %}">My Followed Rooms</a>
-			<a class = "PageLink" href="{% url 'rent_live:index' %}">My Messages</a>
-			<a class = "PageLink" href="{% url 'rent_live:index' %}">My Comments</a>
+			<input class="ProfileButton" type="button" name="Follows" id="Followed" value = "My Followed Rooms" data-categoryid= "{{ user }}">
+			<input class="ProfileButton" type="button" name="Message" id="Message" value = "My Messages" data-categoryid= "{{ user }}">
+			<input class="ProfileButton" type="button" name="Comments" id="Comments" value = "My Comments" data-categoryid= "{{ user }}">
 
 		<!--- user is viewing another profile --->
 		{% else %}
@@ -56,10 +56,12 @@
 			<a class = "PageLink" href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Comments</a>
 		{% endif %}
 	<div>
-
+	<hr/>
+	<div id="ProfileContent">
+		<p>Click a button above to see more content</p>
 	<div>
 
-	<!--- user is viewing another profile --->
+	
 
 </div>
 {% endblock %}

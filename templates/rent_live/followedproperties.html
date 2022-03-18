@@ -1,0 +1,17 @@
+{% load staticfiles %}
+
+{% if properties %}
+	{% for property in properties %}
+		{% if property.picture %}
+			<img class = "PropertyImage" src="{{ MEDIA_URL }}{{ property.picture }}" width="75"height="75"alt="Rental Property Image - {{ property.picture }}"/>
+		{% else %}
+			<img class = "PropertyImage" src="{% static 'images/BlankProperty.jpg' %}" width="75"height="75"alt="Blank Property Picture"/>
+		{% endif %}
+			<li class = "GridRoom"><a class="GridRoom" href="{% url 'rent_live:property' property.slug %}">{{ property.name }}</a></li>
+			<p>{{ property.address }}</p>
+			<p>£{{ property.price }} pcm</p>
+		<hr/>
+	{% endfor %}
+{% else %}
+	<p>No properties have been followed yet</p>
+{% endif %}

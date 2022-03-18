@@ -146,6 +146,7 @@ a.agentlinks {
 
 a.PageLink{
 	text-align: center;
+	margin-left: 20px;
 }
 
 /* https://stackoverflow.com/questions/1224399/display-the-image-in-the-center-of-the-page */
@@ -204,6 +205,12 @@ a.FooterLink {
 }
 
 input.Register {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.ProfileButton {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;

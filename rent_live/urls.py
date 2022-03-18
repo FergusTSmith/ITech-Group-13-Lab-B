@@ -37,4 +37,5 @@ urlpatterns = [
     path('search/results/', views.SearchResultView.as_view(), name='searchresults'),
     path('follow_property/', views.FollowPropertyView.as_view(), name='followproperty'),
     path('suggestion/', views.CitySuggestionView.as_view(), name='suggestion'),
+    path('follows/', views.ProfileFollowsView.as_view(), name='follows'),
 ]
