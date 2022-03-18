@@ -15,17 +15,19 @@
 		{% endif %}
 	</div>
 	<div>
-		<p>Name: {{ selected_user.username }}</p>
-		<p>Email: {{ selected_user.email }}</p>
-		<p>Date Joined: {{ user_profile.datejoined }}</p>
-		<p>Likes: {{ user_profile.totallikes }}</p>
+		<p class = "UserDetails">Name: {{ selected_user.username }}</p>
+		<p class = "UserDetails">Email: {{ selected_user.email }}</p>
+		<p class = "UserDetails">Date Joined: {{ user_profile.datejoined }}</p>
+		<p class = "UserDetails">Likes: {{ user_profile.totallikes }}</p>
 
 		{% if user_profile.superUser == True %}
-		<p>Superuser</p>
+		<p class = "UserDetails">Superuser</p>
 		{% endif %}
 
+		<br/>
+
 		{% if selected_user == user %}
-			<p>Looking to edit your account? Click <a href="{% url 'rent_live:editprofile' user.username %}">Here</a></p>
+			<p class = "UserDetails">Looking to edit your account? Click <a href="{% url 'rent_live:editprofile' user.username %}">Here</a></p>
 		{% endif %}
 
 	
@@ -39,10 +41,10 @@
 	</div>
 
 	<div class = "body">
-		<br/>
 	<br/>
 	<hr/>
 
+	<div class = "ProfileButton">
 	<!--- This is the User's profile --->
 		{% if selected_user == user %}
 			<input class="ProfileButton" type="button" name="Follows" id="Followed" value = "My Followed Rooms" data-categoryid= "{{ user }}">
@@ -55,6 +57,7 @@
 			<a class = "PageLink" href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Messages</a>
 			<a class = "PageLink" href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Comments</a>
 		{% endif %}
+	</div>
 	<div>
 	<hr/>
 	<div id="ProfileContent">
