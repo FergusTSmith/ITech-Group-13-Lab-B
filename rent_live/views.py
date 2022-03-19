@@ -247,8 +247,9 @@ class Rental_PropertyView(View):
         return response
 
 class LettingAgentView(View):
-    def get_agent(self, letting_agent_name_slug):
+    def get_agent(self, request, letting_agent_name_slug):
         context_dict = {}
+        user=request.user
 
         try:
             letting_agent = LettingAgent.objects.get(slug=letting_agent_name_slug)
@@ -256,6 +257,13 @@ class LettingAgentView(View):
             properties = Rental_Property.objects.filter(lettingAgent=letting_agent)
             comments = AgentComment.objects.filter(agent=letting_agent)
             context_dict['comments'] = comments
+
+            for i in comments:
+                liking_users = i.likingUsers.all()
+                for j in liking_users:
+                    if j == user:
+                        i.userHasNotLiked = False
+
             try:
                 help_ = str(letting_agent.like_help_jsons)
                 help_num = eval(help_)[0]
@@ -300,7 +308,7 @@ class LettingAgentView(View):
     def get(self, request, letting_agent_name_slug):
 
 
-        context_dict = self.get_agent(letting_agent_name_slug)
+        context_dict = self.get_agent(request, letting_agent_name_slug)
         print(request.user,"pppppppppppp")
         if str(request.user) != "AnonymousUser":
             context_dict["login"] = "1"
