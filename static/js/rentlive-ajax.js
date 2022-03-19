@@ -14,6 +14,19 @@ $(document).ready(function(){
 			})
 	})
 
+	$('.LikeButton').click(function(){
+		var commentID;
+		commentID = $(this).attr('data-categoryid');
+
+		$.get('/rentlive/likecomment/',
+			{'commentID': commentID},
+			function(data){
+				$('#likes').html("Likes: " + data);
+				$('.LikeButton').hide();
+				$('#likemessage').html("You have liked this comment");
+			})
+	})
+
 /* TWD pg 309 */
 	$('#QuickSearch').keyup(function(){
 		var query;

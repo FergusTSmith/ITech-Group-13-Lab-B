@@ -232,3 +232,9 @@ input.Register {
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.LikeButton{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}

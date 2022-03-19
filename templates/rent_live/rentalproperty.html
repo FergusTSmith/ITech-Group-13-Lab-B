@@ -73,12 +73,20 @@
 				<li>Cleanliness Rating: {{ comment.cleanlinessRating }}</li>
 				<li>Accuracy Rating: {{ comment.accuracyRating }}</li>
 				<li>Enjoyability Rating: {{ comment.enjoyabilityRating }}</li>
-				<p>Likes: {{ comment.likes }}</p>
+				<p id="likes">Likes: {{ comment.likes }}</p>  
+					{% if comment.userHasNotLiked %}
+						<button class="LikeButton" data-categoryid="{{ comment.uniqueID }}" type="button">Like</button> 
+						<div id="likemessage">
+						</div>
+					{% endif %}
 				<hr/>
 			{% endfor %}
 		{% else %}
 			<p>There are no comments for this property, yet</p>
 		{% endif %}
 	</div>
+
+	<br/>
+	<br/>
 
 {% endblock %}
