@@ -12,13 +12,25 @@ class CategoryMethodTests(TestCase):
 
 class RentalPropertyTests(TestCase):
     def test_rental_property(self):
-        rental_property = Rental_Property(name='test', address='abcd', description='asdc', price='100', size='200', followers='200', state='True')
+        rental_property = Rental_Property(name='test', address='abcd', description='asdc', price=100, size=200, followers=200, state='True')
         rental_property.save()
+        self.assertEqual((rental_property.name != 'null'), True)
+        self.assertEqual((rental_property.address != 'null'), True)
+        self.assertEqual((rental_property.description != 'null'), True)
+        self.assertEqual((rental_property.price >= 0), True)
+        self.assertEqual((rental_property.size >= 0), True)
+        self.assertEqual((rental_property.followers >= 0), True)
         
 class LettingAgentTests(TestCase):
     def test_letting_agent(self):
         letting_agent = LettingAgent(name='test', description='abcd', phone='123456', email='123@123.com')
         letting_agent.save()
+        self.assertEqual((letting_agent.name != 'null'), True)
+        self.assertEqual((letting_agent.description != 'null'), True)
+        self.assertEqual((letting_agent.phone != 'null'), True)
+        self.assertEqual((letting_agent.email != 'null'), True)
+        
+        
 
 class IndexViewTests(TestCase):
     def test_index_view_with_no_categories(self):
