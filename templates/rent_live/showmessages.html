@@ -1,0 +1,14 @@
+{% load staticfiles %}
+
+{% if messages %}
+	{% for message in messages %}
+		<p><strong>You received a message from: <a href="{% url 'rent_live:profile' message.author.username %}">{{ message.author }}</a></p></strong>
+		<p>Subject: {{ message.subject }}</p>
+		<p>Detail: {{ message.detail }}</p>
+		<p>Date: {{ message.date }}</p>
+		<hr/>
+
+	{% endfor %}
+{% else %}
+	<p>You have not yet received any messages</p>
+{% endif %}

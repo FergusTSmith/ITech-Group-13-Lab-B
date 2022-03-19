@@ -149,4 +149,9 @@ class UserFollows(models.Model):
     followedProperty = models.ManyToManyField(Rental_Property)
     followed = models.BooleanField(default=True)
 
-
+class UserMessage(models.Model):
+    recepient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="MessageRecepient")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="MessageAuthor")
+    subject = models.CharField(max_length=100)
+    detail = models.CharField(max_length=500)
+    date = models.DateField(auto_now_add=True)

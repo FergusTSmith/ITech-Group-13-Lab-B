@@ -1,0 +1,17 @@
+{% load staticfiles %}
+
+<p>Test</p>
+
+<form id="MessageForm" method="post" action="{% url 'rent_live:sent' %}" enctype="multipart/form-data">
+	{% csrf_token %}
+
+	{{ message_form.as_p }}
+
+	<br/>
+	<br/>
+
+	<input class="SendMessage" id="MessageSending" type ="Submit" value="Send Message"/>
+</form>
+
+{% load staticfiles %}
+

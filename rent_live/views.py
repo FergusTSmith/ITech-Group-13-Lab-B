@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic.edit import DeleteView
-from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile#, #UserFollows
-from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, ProfileEditForm, RentalPropertyForm
+from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile, UserMessage
+from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, ProfileEditForm, RentalPropertyForm, UserMessageForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -444,8 +444,13 @@ class UserPageView(View):
             properties = Rental_Property.objects.filter(followingUsers = user)
         except Rental_Property.DoesNotExist:
             properties = None
+
+        try:
+            messages = UserMessage.objects.filter(recepient=user)
+        except UserMessage.DoesNotExist:
+            messages = None
         
-        context_dict = {'user_profile': user_profile,'selected_user': user,'form': form, 'is_agent': is_agent, 'properties': properties}
+        context_dict = {'user_profile': user_profile,'selected_user': user,'form': form, 'is_agent': is_agent, 'properties': properties, 'messages': messages}
         return render(request, 'rent_live/profile.html', context_dict)
 
     @method_decorator(login_required)
@@ -615,6 +620,88 @@ class ProfileFollowsView(View):
 
         context_dict = {'properties': properties}
         return render(request, 'rent_live/followedproperties.html', context=context_dict)
+
+# Inspired by register, TWD
+class SendMessageView(View):
+    def get(self, request):
+        message_form = UserMessageForm()
+        context_dict = {}
+        context_dict['message_form'] = message_form
+        context_dict['recepient'] = None
+
+        response = render(request, 'rent_live/sendmessage.html', context=context_dict)
+        return response
+
+    def post(self, request):
+        message_form = UserMessageForm(request.POST)
+        user = request.user
+        recepient = None
+        sent = False
+        context_dict = {}
+
+        if message_form.is_valid():
+            message = message_form.save(commit=False)
+            message.author = user
+            recepient = message.recepient
+            message.save()
+            sent = True
+        else:
+            print(message_form.errors)
+
+        context_dict['message_form'] = message_form
+        context_dict['sent'] = sent
+        context_dict['user'] = user
+        context_dict['recepient'] = recepient
+
+        response = render(request, 'rent_live/sendmessage.html', context=context_dict)
+        return response
+
+class MessageSentView(View):
+    def get(self, request):
+        return HttpResponse("Message Successfully Sent")
+    
+    def post(self, request):
+        message_form = UserMessageForm(request.POST)
+        user = request.user
+        recepient = None
+        sent = False
+        context_dict = {}
+
+        if message_form.is_valid():
+            message = message_form.save(commit=False)
+            message.author = user
+            recepient = message.recepient
+            message.save()
+            sent = True
+        else:
+            print(message_form.errors)
+
+        context_dict['message_form'] = message_form
+        context_dict['sent'] = sent
+        context_dict['user'] = user
+        context_dict['recepient'] = recepient
+
+        return HttpResponse("Message Successfully Sent")
+    
+
+class ShowMessagesView(View):
+    def get(self, request):
+        user = request.user
+        
+        try:
+            messages = UserMessage.objects.filter(recepient=user)
+        except UserMessage.DoesNotExist:
+            messages = None
+
+        context_dict = {}
+        context_dict['messages'] = messages
+        context_dict['user'] = user
+
+        response = render(request, 'rent_live/showmessages.html', context=context_dict)
+        return response
+
+
+
 
 ###### HELPER FUNCTIONS ########
 

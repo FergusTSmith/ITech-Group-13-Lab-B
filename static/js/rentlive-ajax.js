@@ -35,6 +35,16 @@ $(document).ready(function(){
 			})
 	});
 
+	$('#MyMessage').click(function(){
+		var user;
+		user = $(this).attr('data-categoryid')
+		$('#ProfileContent').empty();
+		$.get('/rentlive/showmessages/',
+			function(data){
+				$('#ProfileContent').html(data);
+			})
+	})
+
 	$('#Message').click(function(){
 		$('#ProfileContent').empty();
 	})
@@ -42,4 +52,22 @@ $(document).ready(function(){
 	$('#Comments').click(function(){
 		$('#ProfileContent').empty();
 	})
+
+	$('#SendMessage').click(function(){
+		$('#ProfileContent').empty();
+		$.get('/rentlive/message/',
+			function(data){
+				$('#ProfileContent').html(data);
+			})
+	})
+
+	$('#MessageSending').click(function(){
+		$('#ProfileContent').empty();
+		$.get('/rentlive/sent/',
+			function(data){
+				$('#ProfileContent').html(data);
+			})
+	})
+
+
 });

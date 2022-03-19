@@ -38,4 +38,7 @@ urlpatterns = [
     path('follow_property/', views.FollowPropertyView.as_view(), name='followproperty'),
     path('suggestion/', views.CitySuggestionView.as_view(), name='suggestion'),
     path('follows/', views.ProfileFollowsView.as_view(), name='follows'),
+    path('message/', views.SendMessageView.as_view(), name='message'),
+    path('sent/', views.MessageSentView.as_view(), name='sent'),
+    path('showmessages/', views.ShowMessagesView.as_view(), name='showmessages')
 ]

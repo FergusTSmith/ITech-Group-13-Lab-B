@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rent_live.models import UserProfile, LettingAgent, Rental_Property
+from rent_live.models import UserProfile, LettingAgent, Rental_Property, UserMessage
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 
@@ -37,3 +37,8 @@ class ProfileEditForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('username', 'email',)
+
+class UserMessageForm(forms.ModelForm):
+    class Meta:
+        model = UserMessage
+        fields = ('recepient', 'subject', 'detail',)
