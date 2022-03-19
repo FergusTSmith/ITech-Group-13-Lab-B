@@ -51,12 +51,34 @@
 		<p> {{ property.lettingAgent }}</p>
 		<p> {{ property.lettingAgent.email }}</p>
 		<p> {{ property.lettingAgent.phone }}</p>
-		<p><a href="{% url 'rent_live:letting"
 	</div>
 
 	<hr/>
+	<p><strong>Property Comments</strong></p>
+	{% if user.is_authenticated %}
+	<div class="CommentPrompt">
+		<p>Do you have experience with this property? <input class="CommentButton" type="button" name="CommentButton" id="CommentButton" data-categoryid = "{{ user }}" value="Leave a Comment"> </p>
+	{% endif %}
+
+	<div class="commentform" id="commentform">
+	</div>
+	<hr/>
+
+
 	<div class="comments">
-		<p><strong>Comments</strong></p>
+		{% if comments %}
+			{% for comment in comments %}
+				<p><strong>Comment left by {{ comment.user }} on the {{ comment.Date }}</strong></p>
+				<p>Description: {{ comment.Description }}</p>
+				<li>Cleanliness Rating: {{ comment.cleanlinessRating }}</li>
+				<li>Accuracy Rating: {{ comment.accuracyRating }}</li>
+				<li>Enjoyability Rating: {{ comment.enjoyabilityRating }}</li>
+				<p>Likes: {{ comment.likes }}</p>
+				<hr/>
+			{% endfor %}
+		{% else %}
+			<p>There are no comments for this property, yet</p>
+		{% endif %}
 	</div>
 
 {% endblock %}

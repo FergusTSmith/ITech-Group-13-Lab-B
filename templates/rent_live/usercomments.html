@@ -1,0 +1,17 @@
+{% load staticfiles %}
+
+<div class="comments">
+		{% if propertyComments %}
+			{% for comment in propertyComments %}
+				<p><strong>Comment left on {{ comment.property }} on the {{ comment.Date }}</strong></p>
+				<p>Description: {{ comment.Description }}</p>
+				<li>Cleanliness Rating: {{ comment.cleanlinessRating }}</li>
+				<li>Accuracy Rating: {{ comment.accuracyRating }}</li>
+				<li>Enjoyability Rating: {{ comment.enjoyabilityRating }}</li>
+				<p>Likes: {{ comment.likes }}</p>
+				<hr/>
+			{% endfor %}
+		{% else %}
+			<p>This user has not posted any comments for properties</p>
+		{% endif %}
+	</div>

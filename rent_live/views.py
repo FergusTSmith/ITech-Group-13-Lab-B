@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic.edit import DeleteView
-from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment, UserProfile, UserMessage
-from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, ProfileEditForm, RentalPropertyForm, UserMessageForm
+from rent_live.models import Category, LettingAgent, City, Rental_Property, User, PropertyComment, UserProfile, UserMessage
+from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, ProfileEditForm, RentalPropertyForm, UserMessageForm, RentalPropertyComment
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -225,12 +225,15 @@ class Rental_PropertyView(View):
         try:
             rental_property = Rental_Property.objects.get(slug=rental_property_name_slug)
             followers = rental_property.followingUsers.all()
+            comments = PropertyComment.objects.filter(property=rental_property)
             for i in followers:
                 if i == user:
                     is_followed=True
             context_dict['isFollowed'] = is_followed
+            context_dict['comments'] = comments
         except Rental_Property.DoesNotExist:
             context_dict['isFollowed'] = None
+            context_dict['comments'] - None
 
         response = render(request, 'rent_live/rentalproperty.html', context=context_dict)
         return response
@@ -656,6 +659,48 @@ class SendMessageView(View):
         response = render(request, 'rent_live/sendmessage.html', context=context_dict)
         return response
 
+class LeaveCommentView(View):
+    def get(self, request):
+        comment_form = RentalPropertyComment()
+        context_dict = {}
+        context_dict['comment_form'] = comment_form
+
+        response = render(request, 'rent_live/propertycomment.html', context=context_dict)
+        return response
+    
+    def post(self, request):
+        comment_form = RentalPropertyComment(request.POST)
+        user = request.user
+        context_dict = {}
+        posted=False
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = user
+            comment.save()
+            posted=True
+
+            property = comment.property
+            property.totalCleanliness = property.totalCleanliness + comment.cleanlinessRating
+            property.totalAccuracy = property.totalAccuracy + comment.accuracyRating
+            property.totalEnjoyability = property.totalEnjoyability + comment.enjoyabilityRating
+
+            property.totalRatings = property.totalRatings + 1
+
+            property.cleanlinessRating = property.totalCleanliness/property.totalRatings
+            property.accuracyRating = property.totalAccuracy/property.totalRatings
+            property.enjoyabilityRating = property.totalEnjoyability/property.totalRatings
+
+            property.save()
+        else:
+            print(comment_form.errors)
+
+        context_dict['comment_form'] = comment_form
+
+        #response = render(request, 'rent_live/propertycomment.html', context=context_dict)
+        return HttpResponse("Your comment has been posted")
+            
+
 class MessageSentView(View):
     def get(self, request):
         return HttpResponse("Message Successfully Sent")
@@ -698,6 +743,21 @@ class ShowMessagesView(View):
         context_dict['user'] = user
 
         response = render(request, 'rent_live/showmessages.html', context=context_dict)
+        return response
+
+class ShowUserCommentsView(View):
+    def get(self, request):
+        user = request.user
+
+        try:
+            propertyComments = PropertyComment.objects.filter(user=user)
+        except PropertyComment.DoesNotExist:
+            propertyComments = None
+        
+        context_dict = {}
+        context_dict['propertyComments'] = propertyComments
+
+        response = render(request, 'rent_live/usercomments.html', context=context_dict)
         return response
 
 

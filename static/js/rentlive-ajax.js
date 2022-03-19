@@ -45,6 +45,22 @@ $(document).ready(function(){
 			})
 	})
 
+	$('#MyComments').click(function(){
+		$.get('/rentlive/showcomments',
+			function(data){
+				$('#ProfileContent').html(data);
+			})
+	})
+
+	$('#CommentButton').click(function(){
+		var user;
+		user=$(this).attr('data-categoryid')
+		$.get('/rentlive/addcomment/',
+			function(data){
+				$('#commentform').html(data);
+			})
+	})
+
 	$('#Message').click(function(){
 		$('#ProfileContent').empty();
 	})

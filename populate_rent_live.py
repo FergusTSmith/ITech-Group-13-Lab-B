@@ -3,7 +3,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rentlive.settings')
 
 import django
 django.setup()
-from rent_live.models import Category, LettingAgent, City, Rental_Property, User, Comment
+from rent_live.models import Category, LettingAgent, City, Rental_Property, User, PropertyComment
 
 def populate():
 

@@ -40,5 +40,7 @@ urlpatterns = [
     path('follows/', views.ProfileFollowsView.as_view(), name='follows'),
     path('message/', views.SendMessageView.as_view(), name='message'),
     path('sent/', views.MessageSentView.as_view(), name='sent'),
-    path('showmessages/', views.ShowMessagesView.as_view(), name='showmessages')
+    path('showmessages/', views.ShowMessagesView.as_view(), name='showmessages'),
+    path('addcomment/', views.LeaveCommentView.as_view(), name='addcomment'),
+    path('showcomments/', views.ShowUserCommentsView.as_view(), name='showcomment'),
 ]

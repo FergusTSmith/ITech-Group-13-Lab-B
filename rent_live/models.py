@@ -89,6 +89,10 @@ class Rental_Property(models.Model):
     cleanlinessRating = models.IntegerField(default=0)
     accuracyRating = models.IntegerField(default=0)
     enjoyabilityRating = models.IntegerField(default=0)
+    totalCleanliness = models.IntegerField(default=0)
+    totalAccuracy = models.IntegerField(default =0)
+    totalEnjoyability = models.IntegerField(default =0)
+    totalRatings = models.IntegerField(default=0)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
     #city = models.CharField(max_length=3)
     lettingAgent = models.ForeignKey(LettingAgent, on_delete=models.CASCADE, null=True)
@@ -129,8 +133,9 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.username
 
-class Comment(models.Model):
+class PropertyComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    property = models.ForeignKey(Rental_Property, on_delete=models.CASCADE)
     Description = models.CharField(max_length=500)
     Date = models.DateField(auto_now_add=True)
     cleanlinessRating = models.IntegerField(default=0)
