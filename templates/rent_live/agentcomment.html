@@ -1,0 +1,15 @@
+{% load staticfiles %}
+
+<form id="CommentForm" method="post" action="{% url 'rent_live:agentcomment' %}" enctype="multipart/form-data">
+	{% csrf_token %}
+
+	{{ comment_form.as_p }}
+
+	<br/>
+	<br/>
+
+	<input class="PostComment" id="PostComment" type ="Submit" value="Post Comment"/>
+</form>
+
+{% load staticfiles %}
+

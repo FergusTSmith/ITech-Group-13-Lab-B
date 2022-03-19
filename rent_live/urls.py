@@ -43,4 +43,7 @@ urlpatterns = [
     path('showmessages/', views.ShowMessagesView.as_view(), name='showmessages'),
     path('addcomment/', views.LeaveCommentView.as_view(), name='addcomment'),
     path('showcomments/', views.ShowUserCommentsView.as_view(), name='showcomment'),
+    path('likecomment/', views.LikeCommentView.as_view(), name='likecomment'),
+    path('agentcomment/', views.AgentCommentView.as_view(), name='agentcomment'),
+    path('likeagentcomment/', views.LikeAgentComment.as_view(), name='likeagentcomment')
 ]

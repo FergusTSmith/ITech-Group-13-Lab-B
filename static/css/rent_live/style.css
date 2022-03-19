@@ -66,6 +66,10 @@ p.UserDetails {
 
 }
 
+p.AgentDetails{
+	text-align: left;
+}
+
 a {
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -190,6 +194,11 @@ img.AgentLogo {
 	margin-left: auto;
 	margin-right: auto;
 }
+img.Logo {
+	margin-left: 100px;
+	float: left;
+	margin-right: 15px;
+}
 
 img.ProfilePicture{
 	margin-left: 100px;
@@ -234,6 +243,12 @@ input.Register {
 }
 
 .LikeButton{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.AgentLikeButton {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;

@@ -110,17 +110,17 @@
 <div>
 	<div>
 		{% if agent.logo %}
-		<img src="{{ MEDIA_URL }}{{ agent.logo}}" width="250"height="250"alt="Logo for {{ agent.name }}">
+		<img class = "Logo" src="{{ MEDIA_URL }}{{ agent.logo}}" width="250"height="250"alt="Logo for {{ agent.name }}">
 		{% else %}
-		<img src="{% static 'images/BlankPerson.jpg' %}" width="200"height="200"alt="Blank Profile Picture"/>
+		<img class = "Logo" src="{% static 'images/BlankPerson.jpg' %}" width="200"height="200"alt="Blank Profile Picture"/>
 		{% endif %}
 	</div>
 	<div>
-		<p>Name: {{ agent.name }}</p>
-		<p>Email: {{ agent.email }}</p>
-		<p>Date Joined: {{ agent.dateFounded }}</p>
-		<p>Phone Number: {{ agent.phone }}</p>
-		<p>Promptness Rating: {{ help_ave }} </p>
+		<p class = "AgentDetails">Name: {{ agent.name }}</p>
+		<p class = "AgentDetails">Email: {{ agent.email }}</p>
+		<p class = "AgentDetails">Date Joined: {{ agent.dateFounded }}</p>
+		<p class = "AgentDetails">Phone Number: {{ agent.phone }}</p>
+		<p class = "AgentDetails">Promptness Rating: {{ help_ave }} </p>
 
 			{% if login %}
 		<div id="sitelogo">
@@ -174,7 +174,7 @@
 	</div>
 
 	<div class = "agentRooms">
-		<li><a class = "agentlinks" href="{% url 'rent_live:index' %}">{{ agent.name }}'s Rooms</a></li>
+		<li><strong>{{ agent.name }}'s Rooms</strong></li>
 		<hr/>
 		{% if properties %}
 			{% for property in properties %}
@@ -186,11 +186,38 @@
 	</div>
 	<hr/>
 
-		<li><a class = "agentlinks" href="{% url 'rent_live:index' %}">{{ agent.name }}'s Comments</a></li>
+		<li><strong>{{ agent.name }}'s Comments</strong></li>
 	<hr/>
-	<div>
 
-	<div>
+	{% if user.is_authenticated %}
+	<div class="CommentPrompt">
+		<p>Do you have experience with this property? <input class="AgentComment" type="button" name="CommentButton" id="AgentComment" data-categoryid = "{{ user }}" value="Leave a Comment"> </p>
+	{% endif %}
+	<div id="AgCommentForm">
+
+	</div>
+
+	<div class="comments">
+		{% if comments %}
+			{% for comment in comments %}
+				<p><strong>Comment left by {{ comment.user }} on the {{ comment.Date }}</strong></p>
+				<p>Description: {{ comment.Description }}</p>
+				<li>Promptness Rating: {{ comment.promptnessRating }}</li>
+				<li>Helpfulness Rating: {{ comment.helpfulnessRating }}</li>
+				<li>Quality Rating: {{ comment.qualityRating }}</li>
+				<p id="agentLikes">Likes: {{ comment.likes }}</p>
+					{% if comment.userHasNotLiked %}
+						<button class="AgentLikeButton" data-categoryid="{{ comment.uniqueId }}" type="button">Like</button> 
+						<div id="Agentlikemessage">
+						</div>
+					{% endif %}
+				<hr/>
+			{% endfor %}
+		{% else %}
+			<p>There have been no comments left for this Entity</p>
+		{% endif %}
+	<br/><br/><br/><br/>
+
 
 </div>
 {% endblock %}

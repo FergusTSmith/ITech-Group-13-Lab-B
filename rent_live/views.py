@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic.edit import DeleteView
-from rent_live.models import Category, LettingAgent, City, Rental_Property, User, PropertyComment, UserProfile, UserMessage
-from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, ProfileEditForm, RentalPropertyForm, UserMessageForm, RentalPropertyComment
+from rent_live.models import Category, LettingAgent, City, Rental_Property, User, PropertyComment, UserProfile, UserMessage, AgentComment
+from rent_live.forms import UserForm, UserProfileForm, AgentProfileForm, ProfileEditForm, RentalPropertyForm, UserMessageForm, RentalPropertyComment, LettingAgentComment
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -226,9 +226,17 @@ class Rental_PropertyView(View):
             rental_property = Rental_Property.objects.get(slug=rental_property_name_slug)
             followers = rental_property.followingUsers.all()
             comments = PropertyComment.objects.filter(property=rental_property)
+
             for i in followers:
                 if i == user:
                     is_followed=True
+
+            for i in comments:
+                liking_users = i.likingUsers.all()
+                for j in liking_users:
+                    if j == user:
+                        i.userHasNotLiked = False
+
             context_dict['isFollowed'] = is_followed
             context_dict['comments'] = comments
         except Rental_Property.DoesNotExist:
@@ -238,14 +246,6 @@ class Rental_PropertyView(View):
         response = render(request, 'rent_live/rentalproperty.html', context=context_dict)
         return response
 
-class PropertyView(View):
-    def get(self, request):
-        return HttpResponse("This is the page for a specific property")
-
-class LettingAgentsView(View):
-    def get(self, request):
-        return HttpResponse("This is the page detailing different letting agents")
-
 class LettingAgentView(View):
     def get_agent(self, letting_agent_name_slug):
         context_dict = {}
@@ -254,6 +254,8 @@ class LettingAgentView(View):
             letting_agent = LettingAgent.objects.get(slug=letting_agent_name_slug)
             # print(letting_agent.like_help_jsons,letting_agent.like_help_jsons,"*"*200)
             properties = Rental_Property.objects.filter(lettingAgent=letting_agent)
+            comments = AgentComment.objects.filter(agent=letting_agent)
+            context_dict['comments'] = comments
             try:
                 help_ = str(letting_agent.like_help_jsons)
                 help_num = eval(help_)[0]
@@ -291,6 +293,7 @@ class LettingAgentView(View):
             context_dict['properties'] = properties
         except LettingAgent.DoesNotExist:
             context_dict['agent'] = None
+            
         
         return context_dict
    
@@ -311,7 +314,6 @@ class LettingAgentView(View):
                 pass
             print("{} no login".format(request.user))
             print(context_dict)
-
         
         return render(request, 'rent_live/lettingagentpage.html', context=context_dict)
 
@@ -598,6 +600,52 @@ class FollowPropertyView(View):
 
         return HttpResponse(property.followers)
 
+class LikeCommentView(View):
+    def get(self, request):
+        commentID = request.GET['commentID']
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+        profile.totalComments = profile.totalComments +1
+
+        try:
+            comment = PropertyComment.objects.get(uniqueID=commentID)
+        except PropertyComment.DoesNotExist:
+            return HttpResponse(-1)
+
+        comment.likes = comment.likes + 1
+        comment.likingUsers.add(user)
+        comment.save()
+
+        author = comment.user
+        authorProfile = UserProfile.objects.get(user=author)
+        authorProfile.totallikes = authorProfile.totallikes + 1
+        authorProfile.save()
+
+        return HttpResponse(comment.likes)
+
+class LikeAgentComment(View):
+    def get(self, request):
+        commentID = request.GET['commentID']
+        user = request.user
+        profile = UserProfile.objects.get(user=user)
+        profile.totalComments = profile.totalComments +1
+
+        try:
+            comment = AgentComment.objects.get(uniqueId=commentID)
+        except AgentComment.DoesNotExist:
+            return HttpResponse(-1)
+
+        comment.likes = comment.likes + 1
+        comment.likingUsers.add(user)
+        comment.save()
+
+        author = comment.user
+        authorProfile = UserProfile.objects.get(user=author)
+        authorProfile.totallikes = authorProfile.totallikes + 1
+        authorProfile.save()
+
+        return HttpResponse(comment.likes)
+
 #TWD pg 308
 class CitySuggestionView(View):
     def get(self, request):
@@ -699,6 +747,45 @@ class LeaveCommentView(View):
 
         #response = render(request, 'rent_live/propertycomment.html', context=context_dict)
         return HttpResponse("Your comment has been posted")
+
+class AgentCommentView(View):
+    def get(self, request):
+        comment_form = LettingAgentComment()
+        context_dict = {}
+        context_dict['comment_form'] = comment_form
+
+        response = render(request, 'rent_live/agentcomment.html', context=context_dict)
+        return response
+
+    def post(self, request):
+        comment_form = LettingAgentComment(request.POST)
+        user = request.user
+        context_dict={}
+        posted = False
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = user
+            comment.save()
+            posted = True
+
+            agent = comment.agent
+            agent.totalHelpfulness = agent.totalHelpfulness + comment.helpfulnessRating
+            agent.totalPromptness = agent.totalPromptness + comment.promptnessRating
+            agent.totalQuality = agent.totalQuality + comment.qualityRating
+
+            agent.totalRatings = agent.totalRatings + 1
+
+            agent.helpfulnessRating = agent.totalHelpfulness / agent.totalRatings
+            agent.promptnessRating = agent.totalPromptness / agent.totalRatings
+            agent.qualityRating = agent.totalQuality / agent.totalRatings
+
+            agent.save()
+        else:
+            print(comment_form.errors)
+        
+        context_dict['comment_form'] = comment_form
+        return HttpResponse("Your agent comment has been posted")
             
 
 class MessageSentView(View):

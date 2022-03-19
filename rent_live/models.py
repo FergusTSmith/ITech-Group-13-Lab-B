@@ -68,6 +68,10 @@ class LettingAgent(models.Model):
     helpfulnessRating = models.IntegerField(default=0)
     promptnessRating = models.IntegerField(default=0)
     qualityRating = models.IntegerField(default=0)
+    totalHelpfulness = models.IntegerField(default=0)
+    totalPromptness = models.IntegerField(default = 0)
+    totalQuality = models.IntegerField(default=0)
+    totalRatings = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
     logo = models.ImageField(upload_to='logo_images', blank=True)
@@ -134,17 +138,33 @@ class UserProfile(models.Model):
         return self.username
 
 class PropertyComment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Author")
     property = models.ForeignKey(Rental_Property, on_delete=models.CASCADE)
+    uniqueID = models.AutoField(primary_key=True)
     Description = models.CharField(max_length=500)
     Date = models.DateField(auto_now_add=True)
     cleanlinessRating = models.IntegerField(default=0)
     accuracyRating = models.IntegerField(default=0)
     enjoyabilityRating = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
+    likingUsers = models.ManyToManyField(User, null=True, related_name="Likers")
+    userHasNotLiked = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username
+
+class AgentComment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="AgentAuthor")
+    agent = models.ForeignKey(LettingAgent, on_delete=models.CASCADE)
+    uniqueId = models.AutoField(primary_key=True)
+    Description = models.CharField(max_length=500)
+    Date = models.DateField(auto_now_add=True)
+    promptnessRating = models.IntegerField(default=0)
+    qualityRating = models.IntegerField(default=0)
+    helpfulnessRating = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    likingUsers = models.ManyToManyField(User, null=True, related_name="AgentLikers")
+    userHasNotLiked = models.BooleanField(default=True)
 
 #https://www.gyford.com/phil/writing/2017/03/16/django-admin-map/
 

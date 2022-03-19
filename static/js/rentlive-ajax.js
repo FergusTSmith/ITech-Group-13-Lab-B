@@ -27,6 +27,19 @@ $(document).ready(function(){
 			})
 	})
 
+	$('.AgentLikeButton').click(function(){
+		var commentID;
+		commentID = $(this).attr('data-categoryid')
+
+		$.get('/rentlive/likeagentcomment/',
+			{'commentID': commentID},
+			function(data){
+				$('#agentLikes').html("Likes: " + data);
+				$('.AgentLikeButton').hide();
+				$('#Agentlikemessage').html("You have liked this comment");
+			})
+	})
+
 /* TWD pg 309 */
 	$('#QuickSearch').keyup(function(){
 		var query;
@@ -71,6 +84,15 @@ $(document).ready(function(){
 		$.get('/rentlive/addcomment/',
 			function(data){
 				$('#commentform').html(data);
+			})
+	})
+
+	$('#AgentComment').click(function(){
+		var user;
+		user=$(this).attr('data-categoryid')
+		$.get('/rentlive/agentcomment/',
+			function(data){
+				$('#AgCommentForm').html(data);
 			})
 	})
 
