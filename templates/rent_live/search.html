@@ -6,15 +6,22 @@
 {% endblock %}
 
 {% block body_block %}
+<script src="{% static 'js/search.js' %}" crossorigin="anonymous"></script>
 <div class="SearchTitle">
 	<h1>Search Rent Live</h1>
 </div>
 <lb/>
-<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+
 <div class = "Search">
 	<p>Enter in your address below in order to find Rental Properties</p>
 	<input type="search" id="search-input" class="form-control ds-input" placeholder="Address..." width="200px"/>
 <button onclick="gotodata()">search</button>
+	
+	<!--
+	<form action="{% url 'rent_live:searchresults' %}">
+		<input type="search" id="search-input" class="form-control ds-input" placeholder="Address..."/>
+	</form>
+	--->
 </div>
 <hr/>
 
@@ -25,19 +32,6 @@
     <button onclick="gotodata1()">search</button>
 </div>
 
-
-<a href="http://localhost:8000/myss/">Google Link</a>
-<script>
-
-function gotodata(){
-
-    window.location.href="/rentlive/search/results/?search="+$("#search-input").val()
-}
-function gotodata1(){
-
-    window.location.href="/rentlive/search/results1/?search="+$("#search-input2").val()
-}
-</script>
 
 {% endblock %}
 

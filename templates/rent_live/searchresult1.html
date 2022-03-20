@@ -14,12 +14,12 @@
 {% if results %}
 	{% for result in results %}
 		<hr/>
-		{% if property.picture %}
-			<img class = "PropertyImage" src="{{ MEDIA_URL }}{{ property.picture }}" width="200"height="200"alt="Rental Property Image - {{ property.picture }}"/>
+		{% if result.logo %}
+			<img class ="AgentLogo" src="{{ MEDIA_URL }}{{ agent.logo}}" width="100"height="100"alt="Logo for {{ agent.name }}">
 		{% else %}
-			<img class = "PropertyImage" src="{% static 'images/BlankProperty.jpg' %}" width="200"height="200"alt="Blank Property Picture"/>
+			<img class ="AgentLogo" src="{% static 'images/BlankPerson.jpg' %}" width="100"height="100"alt="Blank Profile Picture"/>
 		{% endif %}
-		<p>{{ result.name }}</p>
+		<p><a href="{% url 'rent_live:agent' result.slug %}">{{ result.name }}</a></p>
 		<p>{{ result.description }}</p>
         <p>{{ result.phone }}</p>
         <p>{{ result.email }}</p>

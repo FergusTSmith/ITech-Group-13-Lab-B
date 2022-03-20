@@ -161,6 +161,10 @@ li.rental {
 	text-align: left;
 }
 
+li.AgentDetails {
+	text-align: left;
+}
+
 a.agentlinks {
 	text-align: center;	
 }
@@ -235,6 +239,22 @@ input.Register {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+input.PostComment {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input.Submit {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.likemessage {
+	text-align: center;
 }
 
 .ProfileButton {

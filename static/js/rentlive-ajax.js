@@ -23,7 +23,7 @@ $(document).ready(function(){
 			function(data){
 				$('#likes').html("Likes: " + data);
 				$('.LikeButton').hide();
-				$('#likemessage').html("You have liked this comment");
+				$('.likemessage').html("You have liked this comment");
 			})
 	})
 

@@ -24,8 +24,6 @@
 		<p class = "UserDetails">Superuser</p>
 		{% endif %}
 
-		<br/>
-
 		{% if selected_user == user %}
 			<p class = "UserDetails">Looking to edit your account? Click <a href="{% url 'rent_live:editprofile' user.username %}">Here</a></p>
 		{% endif %}
@@ -35,7 +33,7 @@
 	<!--- User is an Agent --->
 
 	{% if is_agent %}
-		<p>Looking to add a new room to Rent Live? Click <a href="{% url 'rent_live:addProperty' %}">Here</a></p>/
+		<p class = "UserDetails">Looking to add a new room to Rent Live? Click <a href="{% url 'rent_live:addProperty' %}">Here</a></p>/
 	{% endif %}
 
 	</div>
