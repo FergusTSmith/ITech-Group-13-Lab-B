@@ -1,0 +1,36 @@
+{% extends 'rent_live/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Rent Live - Results
+{% endblock %}
+
+{% block body_block %}
+<div class="SearchTitle">
+	<h1>Search Results</h1>
+</div>
+<lb/>
+
+{% if results %}
+	{% for result in results %}
+		<hr/>
+		{% if property.picture %}
+			<img class = "PropertyImage" src="{{ MEDIA_URL }}{{ property.picture }}" width="200"height="200"alt="Rental Property Image - {{ property.picture }}"/>
+		{% else %}
+			<img class = "PropertyImage" src="{% static 'images/BlankProperty.jpg' %}" width="200"height="200"alt="Blank Property Picture"/>
+		{% endif %}
+		<p>{{ result.name }}</p>
+		<p>{{ result.description }}</p>
+        <p>{{ result.phone }}</p>
+        <p>{{ result.email }}</p>
+
+	{% endfor %}
+	
+
+{% else %}
+	<p>Sorry, there were no properties matching your query.</p>
+{% endif %}
+
+
+{% endblock %}
+

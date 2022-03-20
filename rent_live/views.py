@@ -140,6 +140,15 @@ class AboutView(View):
         response = render(request, 'rent_live/about.html', context={})
         return response
 
+
+
+class serachData(View):
+    def get(self, request):
+        print(123123)
+        return HttpResponse({"ss":9})
+
+
+
 class ContactView(View):
     def get(self, request):
         response = render(request, 'rent_live/contact.html', context={})
@@ -158,12 +167,8 @@ class SearchResultView(View):
         try:
             city = City.objects.get(name=query)
             result_list = Rental_Property.objects.filter(city = city)
-           
-                
         except City.DoesNotExist:
             result_list = None
-
-
         return result_list
     
     def get(self, request):
@@ -175,6 +180,30 @@ class SearchResultView(View):
         response = render(request, 'rent_live/searchresult.html', context=context_dict)
         return response
 
+
+# https://learndjango.com/tutorials/django-search-tutorial
+class SearchResultView1(View):
+    def getQuery(self, request):
+        query = self.request.GET.get('search')
+        print(query)
+        try:
+            city = City.objects.get(name=query)
+            result_list = Rental_Property.objects.filter(city=city)
+            mydate = []
+            for item in result_list:
+                mydate.append(item.lettingAgent)
+        except City.DoesNotExist:
+            result_list = None
+        return mydate
+
+    def get(self, request):
+        context_dict = {}
+        model = Rental_Property
+        result_list = self.getQuery(request)
+        context_dict['results'] = result_list
+
+        response = render(request, 'rent_live/searchresult1.html', context=context_dict)
+        return response
 class CityView(View):
     def get_city_details(self, cityname):
         context_dict = {}

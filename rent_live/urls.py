@@ -6,9 +6,14 @@ app_name = 'rent_live'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('about/', views.AboutView.as_view(), name='about'),
+    path('serachData/', views.serachData.as_view(), name='serachData'),
+
     path('about/contact/', views.ContactView.as_view(), name='contact'),
     path('search/', views.SearchView.as_view(), name='search'),
+
     path('search/results/', views.SearchResultView.as_view(), name='searchresult'),
+    path('search/results1/', views.SearchResultView1.as_view(), name='searchresult1'),
+
     path('city/<cityname>/', views.CityView.as_view(), name='city'),
     #path('rentalproperty/', views.Rental_PropertyView.as_view(), name='rentalproperty'),
     path('rentalproperty/<slug:rental_property_name_slug>/', views.Rental_PropertyView.as_view(), name='property'),
