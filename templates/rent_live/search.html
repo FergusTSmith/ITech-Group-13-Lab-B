@@ -1,3 +1,4 @@
+<!--- Template for the user search page --->
 {% extends 'rent_live/base.html' %}
 {% load staticfiles %}
 
@@ -6,30 +7,43 @@
 {% endblock %}
 
 {% block body_block %}
+
 <script src="{% static 'js/search.js' %}" crossorigin="anonymous"></script>
 <div class="SearchTitle">
 	<h1>Search Rent Live</h1>
 </div>
 <lb/>
 
+<!--- Below code is inspired by and sourced from https://javascript.plainenglish.io add-custom-markers-with-the-google-maps-javascript-api-43e8b83f4f7d on 20/03/2020 --->
+<div id="map"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF74fDAehRtTJiQc0L3V_oRnlpYyKCXEc
+&callback=initMap" async defer></script>"
+
+<!--- Search Bar 1 - Search a City for Properties ---->
 <div class = "Search">
-	<p>Enter in your address below in order to find Rental Properties</p>
-	<input type="search" id="search-input" class="form-control ds-input" placeholder="Address..." width="200px"/>
+	<p>Enter in your City below in order to find Rental Properties</p>
+	<input type="search" id="search-input" class="form-control ds-input" placeholder="City..." width="200px"/>
 <button onclick="gotodata()">search</button>
 	
-	<!--
-	<form action="{% url 'rent_live:searchresults' %}">
-		<input type="search" id="search-input" class="form-control ds-input" placeholder="Address..."/>
-	</form>
-	--->
 </div>
 <hr/>
 
+<!--- Search Bar 2 - Search a City for Agents ---->
 
 <div class = "Search">
-	<p>Enter in your address below in order to find Letting Agents</p>
-	<input type="search" id="search-input2" class="form-control ds-input" placeholder="Address..."/>
+	<p>Enter in your City below in order to find Letting Agents</p>
+	<input type="search" id="search-input2" class="form-control ds-input" placeholder="City..."/>
     <button onclick="gotodata1()">search</button>
+</div>
+
+<hr/>
+
+<!--- Search Bar 3 - Search a Property directly by name ---->
+
+<div class = "Search">
+	<p>Or enter in the name of a property to search directly</p>
+	<input type="search" id="search-input3" class="form-control ds-input" placeholder="Property..."/>
+    <button onclick="gotodata2()">search</button>
 </div>
 
 

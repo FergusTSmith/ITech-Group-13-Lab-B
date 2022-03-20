@@ -1,3 +1,4 @@
+<!---- This is the template for a letting agent adding rooms --->
 {% extends 'rent_live/base.html' %}
 {% load staticfiles %}
 
@@ -6,6 +7,8 @@
 {% endblock %}
 
 {% block body_block %}
+<script src="{% static 'js/search.js' %}" crossorigin="anonymous"></script>
+
 	<h1>Add a New Property - RentLive</h1>
 
 	<p>Please register by filling in your information below</p><br />
@@ -14,7 +17,12 @@
 
 			{{ rental_form.as_p }}
 
-			<input class ="Submit" type="submit"name="submit"value="Add Property"/>
+			<!---Extra forms for these as we want to get the values to add to the map --->
+			<p>Longitude: <textarea id="long"></textarea>
+			<p>Latitude: <textarea id="lat"></textarea>
+
+			<!--- On click, add this as a marker to the map ---->
+			<input onclick="addMarker(document.getElementByID('long').value, document.getElementByID('lat'.value))" class ="Submit" type="submit"name="submit"value="Add Property"/>
 		</form>
 
 	{% if added %}

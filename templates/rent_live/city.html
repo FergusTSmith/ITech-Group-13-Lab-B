@@ -1,3 +1,5 @@
+<!--- This template renders the City page, and gives information concerning the city, as well as the properties and letting agents in this city --->
+
 {% extends 'rent_live/base.html' %}
 {% load staticfiles %}
 
@@ -8,6 +10,7 @@
 {% block body_block %}
 	<h1> {{ city.name }} </h1>
 
+	<!--- Displays a different picture depending on the city we are viewing --->
 	<div class = "Picture-Section">
 	{% if city.name == 'Glasgow' %}
 		<img class = "city-picture" src="{% static 'images/glasgow.jpg' %}" width = "400" height = "300" alt="Glasgow" />
@@ -41,7 +44,7 @@
 
 	<hr/>
 
-
+	<!---- Display the properties in a city --->
 	<div class="CityProperties">
 		<p><Strong>Properties in this City</Strong></p>
 		<hr/>
@@ -67,6 +70,7 @@
 		</ul>
 	</div>
 
+	<!--- Display the Agents in a city --->
 	<div class="CityAgents">
 		<p><Strong>Agents, Landlords and Agencies in this City</Strong></p>
 		<hr/>

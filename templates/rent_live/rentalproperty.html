@@ -1,3 +1,4 @@
+<!--- This template details the displaying of an individual rental property --->
 {% extends 'rent_live/base.html' %}
 {% load staticfiles %}
 
@@ -60,6 +61,7 @@
 		<p>Do you have experience with this property? <input class="CommentButton" type="button" name="CommentButton" id="CommentButton" data-categoryid = "{{ user }}" value="Leave a Comment"> </p>
 	{% endif %}
 
+	<!--- Where the comment form will be displayed if the user clicks the button --->
 	<div class="commentform" id="commentform">
 	</div>
 	<hr/>

@@ -6,6 +6,8 @@ from django import template
 
 # Create your tests here.
 
+# The majority of these tests are adapted from the tests shown in Tango With Django, page 322. Retrieved 20/03/2022
+
 # Test model
 class CategoryMethodTests(TestCase):
     def test_category(self):
@@ -46,3 +48,15 @@ class IndexViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
+class AboutViewTests(TestCase):
+    def test_about_view(self):
+        response = self.client.get(reverse('rent_live:about'))
+        self.assertEqual(response.status_code, 200)
+
+class ContactViewTest(TestCase):
+    def test_contact_view(self):
+        response = self.client.get(reverse('rent_live:contact'))
+        self.assertEqual(response.status_code, 200)
+
+class SearchResultsView(TestCase):
+    

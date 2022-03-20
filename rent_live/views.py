@@ -9,11 +9,14 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth import logout
 
 
 # Create your views here.
+
+# Index View - Shows the HomePage for the user. Context is seen below.
 class IndexView(View):
     def get(self, request):
         property_list = Rental_Property.objects.order_by('-followers')[:3]
@@ -32,134 +35,36 @@ class IndexView(View):
         context_dict['numberOfProperties'] = numberOfProperties
 
         response = render(request, 'rent_live/index.html', context=context_dict)
-
         return response
 
-
-
-class rating(View):
-    def post(self, request):
-        print(request.user)
-        type_ = request.POST.get("type")
-        star_num = request.POST.get("_")
-        user = request.POST.get("user")
-        print(type_,star_num,user)
-        print(request.POST.get("agent_name"),"2"*50)
-        a_ = LettingAgent.objects.get(slug = str(request.POST.get("agent_name")))
-        print(1)
-        if type_ =="help":
-            try:
-                print(1)
-                print(a_.like_help_jsons,user)
-                if str(user) in eval(a_.like_help_jsons)[0]:
-                    print(2)
-
-                    return HttpResponse("already rated")
-            except:
-                pass
-
-            if a_.like_help_jsons =="":
-
-                print(3)
-
-                a_.like_help_jsons =  str([{user:star_num}])
-                a_.save()
-
-                print(a_.like_help_jsons)
-            else:
-                print(a_.like_help_jsons)
-                print(4)
-
-                try:
-                    last= eval(a_.like_help_jsons)[0].append({user:star_num})
-                    print(last)
-                    a_.like_help_jsons = str(eval(a_.like_help_jsons).append({user:star_num}))
-                except:
-                    a_.like_help_jsons =  str([{user:star_num}])
-                a_.save()
-
-            return HttpResponse("rate success")
-
-        if type_ =="quality":
-            try:
-                print(1)
-                print(a_.like_quality_jsons,user)
-                if str(user) in eval(a_.like_quality_jsons)[0]:
-                    print(2)
-
-                    return HttpResponse("already rated")
-            except:
-                pass
-
-            if a_.like_quality_jsons =="":
-
-                print(3)
-
-                a_.like_quality_jsons =  str([{user:star_num}])
-                a_.save()
-
-                print(a_.like_quality_jsons)
-            else:
-                print(a_.like_quality_jsons)
-                print(4)
-
-                try:
-                    last= eval(a_.like_quality_jsons)[0].append({user:star_num})
-                    print(last)
-                    a_.like_quality_jsons = str(eval(a_.like_quality_jsons).append({user:star_num}))
-                except:
-                    a_.like_quality_jsons =  str([{user:star_num}])
-                a_.save()
-
-            return HttpResponse("rate success")
-
-
-
-        registered = False
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
-
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-
-            profile = profile_form.save(commit=False)
-            profile.user = user
-
-            if 'ProfilePic' in request.FILES:
-                profile.profilePic = request.FILES['ProfilePic']
-
-            profile.save()
-            registered = True
-        else:
-            print(user_form.errors, profile_form.errors)
-
+# Simply Renders the About Page, containing information on the site and the creators.
 class AboutView(View):
     def get(self, request):
         response = render(request, 'rent_live/about.html', context={})
         return response
 
-
-
+# ?
 class serachData(View):
     def get(self, request):
         print(123123)
         return HttpResponse({"ss":9})
 
-
-
+# Returns the rendering of the Contact page, containing information on the creators of RentLive. 
 class ContactView(View):
     def get(self, request):
         response = render(request, 'rent_live/contact.html', context={})
         return response
 
+# Returns the template for rendering the Search page.
 class SearchView(View):
     def get(self, request):
         response = render(request, 'rent_live/search.html', context={})
         return response
 
-#https://learndjango.com/tutorials/django-search-tutorial
+
+# The below view gets the query, returns the relevant rental properties to that query, and returns the template for displaying this to the user.
+# The below was inspired and adapted from: https://learndjango.com/tutorials/django-search-tutorial - 17/03/2022
+
 class SearchResultView(View):
     def getQuery(self, request):
         query = self.request.GET.get('search')
@@ -180,8 +85,8 @@ class SearchResultView(View):
         response = render(request, 'rent_live/searchresult.html', context=context_dict)
         return response
 
-
-# https://learndjango.com/tutorials/django-search-tutorial
+# The below view gets the query, returns the relevant letting agents to that query, and returns the template for displaying this to the user.
+# The below was inspired and adapted from: https://learndjango.com/tutorials/django-search-tutorial - 17/03/2022
 class SearchResultView1(View):
     def getQuery(self, request):
         query = self.request.GET.get('search')
@@ -204,6 +109,25 @@ class SearchResultView1(View):
 
         response = render(request, 'rent_live/searchresult1.html', context=context_dict)
         return response
+
+class PropertySearchResult(View):
+    def get(self, request):
+        query = self.request.GET.get('search')
+        model = Rental_Property
+        context_dict = {}
+
+        try:
+            result = Rental_Property.objects.filter(name=query)
+        except RentalProperty.DoesNotExist:
+            result = None
+        
+        context_dict['results'] = result
+        response = render(request, 'rent_live/searchresult.html', context=context_dict)
+        return response
+        
+        
+
+# This view is for the city pages. This gets the relevant rental properties and letting agents for a city and displays them, as well as that city's information.
 class CityView(View):
     def get_city_details(self, cityname):
         context_dict = {}
@@ -232,7 +156,7 @@ class CityView(View):
         response = render(request, 'rent_live/city.html', context=context_dict)
         return response
 
-
+# This view is for rendering the specific rental property pages. Includes any comments left, followers and whether the current user is following this page.
 class Rental_PropertyView(View):
     def get_rental_property(self, rental_property_name_slug):
         context_dict = {}
@@ -275,6 +199,7 @@ class Rental_PropertyView(View):
         response = render(request, 'rent_live/rentalproperty.html', context=context_dict)
         return response
 
+# This view renders the Letting Agent pages. Includes a helper function to get the agent's details and create a context dictionary.
 class LettingAgentView(View):
     def get_agent(self, request, letting_agent_name_slug):
         context_dict = {}
@@ -282,7 +207,6 @@ class LettingAgentView(View):
 
         try:
             letting_agent = LettingAgent.objects.get(slug=letting_agent_name_slug)
-            # print(letting_agent.like_help_jsons,letting_agent.like_help_jsons,"*"*200)
             properties = Rental_Property.objects.filter(lettingAgent=letting_agent)
             comments = AgentComment.objects.filter(agent=letting_agent)
             context_dict['comments'] = comments
@@ -293,50 +217,14 @@ class LettingAgentView(View):
                     if j == user:
                         i.userHasNotLiked = False
 
-            try:
-                help_ = str(letting_agent.like_help_jsons)
-                help_num = eval(help_)[0]
-                total = 0
-                for i in help_num:
-                    total += int(help_num[i])
-                help_average = total/len(help_num)
-
-                context_dict["help_num"] = len(help_num)
-                context_dict["help_ave"] = help_average
-
-
-                quality_ = str(letting_agent.like_quality_jsons)
-                quality_num = eval(quality_)[0]
-                total = 0
-                for i in quality_num:
-                    total += int(quality_num[i])
-                quality_average = total/len(quality_num)
-                context_dict["quality_num"] = len(quality_num)
-                context_dict["quality_ave"] = quality_average
-            except:
-                try:
-                    context_dict["help_num"] = len(help_num)
-                    context_dict["help_ave"] = help_average
-                    context_dict["quality_num"] = len(quality_num)
-                    context_dict["quality_ave"] = quality_average
-                except:
-                    letting_agent.like_help_jsons=""
-                    letting_agent.like_quality_jsons=""
-                    context_dict["help_num"] = 0
-                    context_dict["help_ave"] = 0
-                    context_dict["quality_num"] = 0
-                    context_dict["quality_ave"] = 0
             context_dict['agent'] = letting_agent
             context_dict['properties'] = properties
         except LettingAgent.DoesNotExist:
             context_dict['agent'] = None
             
-        
         return context_dict
    
     def get(self, request, letting_agent_name_slug):
-
-
         context_dict = self.get_agent(request, letting_agent_name_slug)
         print(request.user,"pppppppppppp")
         if str(request.user) != "AnonymousUser":
@@ -354,14 +242,7 @@ class LettingAgentView(View):
         
         return render(request, 'rent_live/lettingagentpage.html', context=context_dict)
 
-class LACommentsView(View):
-    def get(self, request):
-        return HttpResponse("This is the page detailing the comments for letting agent")
-
-class LAPropertiesView(View):
-    def get(self, request):
-        return HttpResponse("This is the page for seeing specific rental properties offered by a letting agent")
-
+# This view focuses on rendering the page and collecting the forms required for a user to register their account. This is adapted from Tango With Django page 157 - Retrieved 10/03/2022
 class RegisterView(View):    
     def get(self, request):
         registered = False
@@ -395,6 +276,7 @@ class RegisterView(View):
         response = render(request, 'rent_live/register.html', context={'user_form': user_form, 'profile_form':profile_form,'registered':registered})
         return response
 
+# This view focuses on rendering the page and collecting the forms required for a LettingAgent to register their account. This is adapted from Tango With Django page 157 - Retrieved 10/03/2022
 class LettingAgentRegisterView(View):
     def get(self, request):
         registered = False
@@ -416,6 +298,7 @@ class LettingAgentRegisterView(View):
 
             agent = agent_form.save(commit=False)
             agent.user = user
+            agent.email = user.email
 
             if 'logo' in request.FILES:
                 agent.logo = request.FILES['logo']
@@ -428,7 +311,7 @@ class LettingAgentRegisterView(View):
         response = render(request, 'rent_live/lettingagentregister.html', context={'agent_form': agent_form, 'user_form': user_form, 'registered': registered})
         return response
 
-
+# This view is to allow users to log into their accounts. This is adapted from Tango With Django Page 164 - Retrieved 10/03/2021
 class LogInView(View):
     def get(self, request):
         response = render(request, 'rent_live/login.html')
@@ -450,6 +333,7 @@ class LogInView(View):
             print("Login Details not recognized for: {username}, {password}")
             return HttpResponse("Error: Please reenter your details and ensure that these are correct.")
 
+# This view will allow users to log out of their account. This is adapted from Tango With Django page 172 - Retrieved 10/03/2022.
 class LogOutView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -457,6 +341,7 @@ class LogOutView(View):
         response = redirect(reverse('rent_live:index'))
         return response
 
+# This view allows users to view their own, and other users', profile pages. This is adapted from Tango With Django page 271 - Retrieved 11/03/2022.
 class UserPageView(View):
     def get_user_details(self, username):
         try:
@@ -514,18 +399,7 @@ class UserPageView(View):
         
         return render(request, 'rent_live/profile.html', context_dict)
 
-class UserMessagesView(View):
-    def get(self, request):
-        return HttpResponse("This page will show the messages for the user")
-
-class UserCommentsView(View):
-    def get(self, request):
-        return HttpResponse("This page will show the comments for a user")
-    
-class UserRentalsView(View):
-    def get(self, request):
-        return HttpResponse("This page will show the previously rented properties for a user.")
-
+# This view allows Letting Agents to upload new properties to Rent live. This is adapted from the registration in Tango With Django page 157 - Retrieved 11/03/2022
 class AddRentalView(View):
     def get(self, request):
         added = False
@@ -552,6 +426,8 @@ class AddRentalView(View):
         response = render(request, 'rent_live/addroom.html', context={'rental_form': rental_form, 'added': added})
         return response
 
+# This class allows users to Edit their profile details, i.e., their username and password after creation. This was adapted from a Youtube tutorial by Max Goodridge retrieved 12/03/2022 -https://www.youtube.com/watch?v=JmaxoPBvp1M&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=18&ab_channel=MaxGoodridge
+
 class EditProfileView(View):
     def get(self, request, username):
         form = ProfileEditForm(instance=request.user)
@@ -559,7 +435,6 @@ class EditProfileView(View):
         response = render(request, 'rent_live/editaccount.html', context={'form': form})
         return response
 
-    #https://www.youtube.com/watch?v=JmaxoPBvp1M&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=18&ab_channel=MaxGoodridge
     def post(self, request, username):
         form = ProfileEditForm(request.POST, instance=request.user)
 
@@ -567,7 +442,8 @@ class EditProfileView(View):
             form.save()
             return redirect(reverse('rent_live:index'))
 
-#https://www.youtube.com/watch?v=QxGKTvx-Vvg&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=20&ab_channel=MaxGoodridge
+
+# This class allows users to change their password. This was adapted from a Youtube Tutorial by Max Goodridge retrieved 12/03/2022 - https://www.youtube.com/watch?v=QxGKTvx-Vvg&list=PLw02n0FEB3E3VSHjyYMcFadtQORvl1Ssj&index=20&ab_channel=MaxGoodridge
 class ChangePasswordView(View):
     def get(self, request):
         form = PasswordChangeForm(user=request.user)
@@ -576,15 +452,19 @@ class ChangePasswordView(View):
         
     def post(self, request):
         form = PasswordChangeForm(data=request.POST, user=request.user)
+        user = request.user
 
         if form.is_valid():
             form.save()
+            user.password = form.new_password2()
+            user.save()
             update_session_auth_hash(request, form.user) #Stops user from being logged out.
             return redirect(reverse('rent_live:index'))
         else:
             return redirect(reverse('rent_live:index'))
 
-#https://stackoverflow.com/questions/33715879/how-to-delete-user-in-django
+
+# This view allows a user to delete their account. This was adapted from code found on StackOverflow, retrieved 14/03/2022 - https://stackoverflow.com/questions/33715879/how-to-delete-user-in-django
 class DeleteUserView(DeleteView):
     def get(self, request, username):
         return render(request, 'rent_live/delete.html', context={})
@@ -594,6 +474,7 @@ class DeleteUserView(DeleteView):
         user.delete()
         return redirect(reverse('rent_live:index'))
 
+# Renders the Page that displays a list of all the landlords on the site.
 class LandLordView(View):
     def get(self, request):
         context_dict = {}
@@ -602,6 +483,7 @@ class LandLordView(View):
         context_dict['agents'] = agents
         return render(request, 'rent_live/landlords.html', context=context_dict)
 
+# Renders the Page that displays a list of all the Agencies on the site.
 class AgencyView(View):
     def get(self, request):
         context_dict = {}
@@ -610,6 +492,7 @@ class AgencyView(View):
         context_dict['agents'] = agents
         return render(request, 'rent_live/agencies.html', context=context_dict)
 
+# Renders the Page that displays a list of all the agents on the site.
 class AgentView(View):
     def get(self, request):
         context_dict = {}
@@ -618,7 +501,7 @@ class AgentView(View):
         context_dict['agents'] = agents
         return render(request, 'rent_live/agents.html', context=context_dict)
 
-#TWD pg 300
+# This view allows users to follow rental properties. This is called by AJAX logic. This was adapted from the liking function described in Tango With Django page 300 - retrieved 14/03/2022.
 class FollowPropertyView(View):
     def get(self, request):
         property_name = request.GET['name']
@@ -637,6 +520,7 @@ class FollowPropertyView(View):
 
         return HttpResponse(property.followers)
 
+# This view allows users to like property comments. This is called by AJAX logic. This was adapted from the liking function described in Tango With Django page 300 - retrieved 14/03/2022.
 class LikeCommentView(View):
     def get(self, request):
         commentID = request.GET['commentID']
@@ -659,6 +543,8 @@ class LikeCommentView(View):
         authorProfile.save()
 
         return HttpResponse(comment.likes)
+
+# This view allows users to like comments on Letting Agent Pages. This is called by AJAX logic. This was adapted from the liking function described in Tango With Django page 300 - retrieved 14/03/2022.
 
 class LikeAgentComment(View):
     def get(self, request):
@@ -683,7 +569,7 @@ class LikeAgentComment(View):
 
         return HttpResponse(comment.likes)
 
-#TWD pg 308
+# This view allows AJAX logic to display suggested cities in the page when typing in the search bar on the first page. This was adapted from a similar function in Tango With Django page 308 - retrieved 14/03/2022.
 class CitySuggestionView(View):
     def get(self, request):
         if 'suggestion' in request.GET:
@@ -698,6 +584,7 @@ class CitySuggestionView(View):
         
         return render(request, 'rent_live/cities.html', {'cities': list_of_cities})
 
+# This view allows AJAX logic to show a list of all the properties a user follows on their profile page. 
 class ProfileFollowsView(View):
     def get(self, request):
         user = request.user
@@ -709,7 +596,7 @@ class ProfileFollowsView(View):
         context_dict = {'properties': properties}
         return render(request, 'rent_live/followedproperties.html', context=context_dict)
 
-# Inspired by register, TWD
+# The below view allows users to send simple messages to other users. This was adapted and inspired by the simple registration code from Tango With Django page 157, but has been changed singificantly. Retreived 13/03/2022.
 class SendMessageView(View):
     def get(self, request):
         message_form = UserMessageForm()
@@ -744,6 +631,7 @@ class SendMessageView(View):
         response = render(request, 'rent_live/sendmessage.html', context=context_dict)
         return response
 
+# Allows a user to post a comment and rate rental properties. This is adapted from the Adding Category functionality in Tango With Django page 116. Retrieved 19/03/2022.
 class LeaveCommentView(View):
     def get(self, request):
         comment_form = RentalPropertyComment()
@@ -785,6 +673,7 @@ class LeaveCommentView(View):
         #response = render(request, 'rent_live/propertycomment.html', context=context_dict)
         return HttpResponse("Your comment has been posted")
 
+# Allows a user to post a comment on letting agent pages and rate them. This is adapted from the Adding Category functionality in Tango With Django page 116. Retrieved 19/03/2022.
 class AgentCommentView(View):
     def get(self, request):
         comment_form = LettingAgentComment()
@@ -824,7 +713,7 @@ class AgentCommentView(View):
         context_dict['comment_form'] = comment_form
         return HttpResponse("Your agent comment has been posted")
             
-
+# This view is in charge of saving a message sent to another user, and informing the author that this was sent. Vaguely based on the Tango With Django Registration view, page 116. Retrieved 19/03/2022
 class MessageSentView(View):
     def get(self, request):
         return HttpResponse("Message Successfully Sent")
@@ -852,7 +741,7 @@ class MessageSentView(View):
 
         return HttpResponse("Message Successfully Sent")
     
-
+# Class allows AJAX logic to show user messages on their profile. 
 class ShowMessagesView(View):
     def get(self, request):
         user = request.user
@@ -869,6 +758,7 @@ class ShowMessagesView(View):
         response = render(request, 'rent_live/showmessages.html', context=context_dict)
         return response
 
+# Class allows AJAX logic to show comments a user has posted on their profile. 
 class ShowUserCommentsView(View):
     def get(self, request):
         user = request.user
@@ -884,12 +774,9 @@ class ShowUserCommentsView(View):
         response = render(request, 'rent_live/usercomments.html', context=context_dict)
         return response
 
-
-
-
 ###### HELPER FUNCTIONS ########
 
-#TWD pg 307
+#This helper function returns a list of cities. Used for the Searching function. This was inspired and adapted by a similar function in Tango With Django page 307 - retrieved 20/02/2022.
 
 def get_list_of_cities(max_results = 0, starts_with=''):
     list_of_cities = []
@@ -903,7 +790,6 @@ def get_list_of_cities(max_results = 0, starts_with=''):
 
     return list_of_cities
 
-def get_list_of_properties(max_results=0, starts_with=' '):
-    return None
+
 
 

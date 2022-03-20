@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+<!---- Base template extended by all other templates to provide a consistent style --->
 
 <html>
 	<head lang="en">
@@ -10,7 +11,7 @@
 		<script src="{% static 'js/rentlive-ajax.js' %}" crossorigin="anonymous"></script>
 		
 
-
+		<!----- Contains the code for the Navigation Bar at the top of the page ---->
 		<div class = "header">
 			<ul class = "Navigation-Bar">
 				<img class = "logo" src="{% static 'images/RentLiveLogo.png' %}" alt="Rent Live's Logo"/>
@@ -18,15 +19,19 @@
 				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:search' %}">Search</a></li>
 				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:about' %}">About Us</a></li>
 				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:contact' %}">Contact</a></li>
+				<!---- If Authenticated, show the profile and logout links. If not, show register and login ---->
 				{% if user.is_authenticated %}
-				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:profile' user.username %}">My Profile</a></li>
-				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:logout' %}">Logout</a></li>
+					<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:profile' user.username %}">My Profile</a></li>
+					<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:logout' %}">Logout</a></li>
 				{% else %}
-				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:register' %}">Register</a></li>
-				<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:login' %}">Login</a></li>
+					<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:register' %}">Register</a></li>
+					<li class = "Nav-Link"><a class = "Nav-Link" href="{% url 'rent_live:login' %}">Login</a></li>
 				{% endif %}
 			</ul>
 		</div>
+
+		<!----- Contains the code for the Side Bar at the side of the page ---->
+
 
 		<div class = "Side" id = "Side">
 			<ul class = "SideBar" id="SideBar">
@@ -63,7 +68,7 @@
 		</div>
 	</body>
 
-
+<!------ Footer displays at the bottom of each page ---->
 <footer>
 	<p><a class = "FooterLinks" href="{% url 'rent_live:landlords' %}">Landlords</a>
 	<a class = "FooterLinks" href="{% url 'rent_live:agencies' %}">Agencies</a>

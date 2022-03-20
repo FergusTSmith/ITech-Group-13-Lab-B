@@ -1,3 +1,5 @@
+<!---- This template concerns displaying search results for the Letting Agent Search --->
+
 {% extends 'rent_live/base.html' %}
 {% load staticfiles %}
 
@@ -11,6 +13,7 @@
 </div>
 <lb/>
 
+<!--- If an agent matches the query, display the agents' details. Else, mention there are no agents ---->
 {% if results %}
 	{% for result in results %}
 		<hr/>
@@ -23,12 +26,9 @@
 		<p>{{ result.description }}</p>
         <p>{{ result.phone }}</p>
         <p>{{ result.email }}</p>
-
 	{% endfor %}
-	
-
 {% else %}
-	<p>Sorry, there were no properties matching your query.</p>
+	<p>Sorry, there were no Agents matching your query.</p>
 {% endif %}
 
 

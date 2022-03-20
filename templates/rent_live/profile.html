@@ -1,3 +1,4 @@
+<!--- Template for displaying a user's profile --->
 {% extends 'rent_live/base.html' %}
 {% load staticfiles %}
 
@@ -30,7 +31,7 @@
 
 	
 
-	<!--- User is an Agent --->
+	<!--- If the user is an agent, we give them the option to add a room --->
 
 	{% if is_agent %}
 		<p class = "UserDetails">Looking to add a new room to Rent Live? Click <a href="{% url 'rent_live:addProperty' %}">Here</a></p>/
@@ -43,21 +44,21 @@
 	<hr/>
 
 	<div class = "ProfileButton">
+	
 	<!--- This is the User's profile --->
 		{% if selected_user == user %}
 			<input class="ProfileButton" type="button" name="Follows" id="Followed" value = "My Followed Rooms" data-categoryid= "{{ user }}">
 			<input class="ProfileButton" type="button" name="Message" id="MyMessage" value = "My Messages" data-categoryid= "{{ user }}">
 			<input class="ProfileButton" type="button" name="Comments" id="MyComments" value = "My Comments" data-categoryid= "{{ user }}">
 
-		<!--- user is viewing another profile --->
+		<!--- user is viewing another profile, only shows a button to send them a message --->
 		{% else %}
-			<a class = "PageLink" href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Followed Rooms</a>
 			<input class="ProfileButton" type="button" name="SendMessage" id="SendMessage" value = "Send Message" data-categoryid= "{{ user }}">
-			<a class = "PageLink" href="{% url 'rent_live:index' %}">{{ selected_user.username }} 's Comments</a>
 		{% endif %}
 	</div>
 	<div>
 	<hr/>
+	<!--- Where AJAX content will be displayed --->
 	<div id="ProfileContent">
 		<p>Click a button above to see more content</p>
 	<div>

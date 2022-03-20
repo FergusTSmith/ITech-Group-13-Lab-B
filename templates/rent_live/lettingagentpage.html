@@ -1,3 +1,4 @@
+<!---- This template covers the displaying of a letting agent page --->
 {% extends 'rent_live/base.html' %}
 {% load staticfiles %}
 
@@ -6,10 +7,6 @@
 {% endblock %}
 
 {% block body_block %}
-<script src="{% static 'js/ratingscript.js' %}"></script>
-
-
-
 <div>
 	<div>
 		{% if agent.logo %}
@@ -37,20 +34,23 @@
 		{% if properties %}
 			{% for property in properties %}
 				{% if property.picture %}
-						<img class = "PropertyImage" src="{{ MEDIA_URL }}{{ property.picture }}" width="75"height="75"alt="Rental Property Image - {{ property.picture }}"/>
-					{% else %}
-						<img class = "PropertyImage" src="{% static 'images/BlankProperty.jpg' %}" width="75"height="75"alt="Blank Property Picture"/>
-					{% endif %}
-					<li class = "GridRoom"><a class="GridRoom" href="{% url 'rent_live:property' property.slug %}">{{ property.name }}</a></li>
-					<p>{{ property.address }}</p>
-					<p>£{{ property.price }} pcm</p>
-					<p>{{ property.lettingAgent.name }}</p>
-					<hr/>
+					<img class = "PropertyImage" src="{{ MEDIA_URL }}{{ property.picture }}" width="75"height="75"alt="Rental Property Image - {{ property.picture }}"/>
+				{% else %}
+					<img class = "PropertyImage" src="{% static 'images/BlankProperty.jpg' %}" width="75"height="75"alt="Blank Property Picture"/>
+				{% endif %}
+				
+				<li class = "GridRoom"><a class="GridRoom" href="{% url 'rent_live:property' property.slug %}">{{ property.name }}</a></li>
+				<p>{{ property.address }}</p>
+				<p>£{{ property.price }} pcm</p>
+				<p>{{ property.lettingAgent.name }}</p>
+				<hr/>
 			{% endfor %}
 		{% else %}
 			<p> This Agent does not have any properties uploaded</p>
 		{% endif %}
 	</div>
+
+	<!--- Displaying the agent's comments --->
 
 		<li><strong>{{ agent.name }}'s Comments</strong></li>
 	<hr/>

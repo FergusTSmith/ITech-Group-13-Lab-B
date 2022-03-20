@@ -1,7 +1,7 @@
+/* Navigation Bar Style */
 a .Nav-Link{
     float: left;
     font-family: Arial, Helvetica, sans-serif;
-
 }
 
 li .Nav-Link{
@@ -15,7 +15,6 @@ li .Nav-Link{
 	font-family: Arial, Helvetica, sans-serif;
 
 }
-
 .Bar-Link{
 	float:left;
 }
@@ -25,16 +24,6 @@ li .Nav-Link{
 	padding: 10px 8px;
 	font-family: Arial, Helvetica, sans-serif;
 }
-
-body {
-  background-color: azure;
-}
-
-li a{
-	color = white;
-	font-family: Arial, Helvetica, sans-serif;
-}
-
 .Navigation-Bar {
 	position= fixed;
 	top: 0;
@@ -45,7 +34,19 @@ li a{
 	background-color: darkslategrey;
 }
 
-/* https://www.w3schools.com/howto/howto_css_fixed_footer.asp */
+/* More General Styles */
+
+body {
+  background-color: azure;
+}
+
+li a{
+	color = white;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* Below footer code has been adapted from this tutorial: https://www.w3schools.com/howto/howto_css_fixed_footer.asp; retrieved 15/03/2020 */
 footer {
 	position: fixed;
 	left: 0;
@@ -59,15 +60,6 @@ footer {
 p{
 	text-align: center;
 	font-family: Arial, Helvetica, sans-serif;
-}
-
-p.UserDetails {
-	text-align: left;
-
-}
-
-p.AgentDetails{
-	text-align: left;
 }
 
 a {
@@ -84,6 +76,17 @@ li {
 	text-decoration: none;
 	list-style-type: none;
 	font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Below this, specific styling for different elements of different pages on the site */
+
+p.UserDetails {
+	text-align: left;
+
+}
+
+p.AgentDetails{
+	text-align: left;
 }
 
 .City-Link {
@@ -174,7 +177,7 @@ a.PageLink{
 	margin-left: 20px;
 }
 
-/* https://stackoverflow.com/questions/1224399/display-the-image-in-the-center-of-the-page */
+/* Below image, and subsequent button styling, adapted from this stackoverflow answer:https://stackoverflow.com/questions/1224399/display-the-image-in-the-center-of-the-page ; */
 img.PropertyImage {
 	display: block;
 	margin-left: auto;
@@ -270,6 +273,14 @@ div.likemessage {
 
 .AgentLikeButton {
 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* below style has been adapted from https://javascript.plainenglish.io/add-custom-markers-with-the-google-maps-javascript-api-43e8b83f4f7d retrieved 20/03/2020 */
+#map {
+	height: 400px;
+	width: 400px;
 	margin-left: auto;
 	margin-right: auto;
 }
