@@ -18,7 +18,7 @@ class CategoryMethodTests(TestCase):
 
 class RentalPropertyTests(TestCase):
     def test_rental_property(self):
-        rental_property = Rental_Property(name='test', address='abcd', description='asdc', price=100, size=200, followers=200, state='True')
+        rental_property = Rental_Property(name='test', address='abcd', description='asdc', price=100, size=200, followers=200)
         rental_property.save()
         self.assertEqual((rental_property.name != 'null'), True)
         self.assertEqual((rental_property.address != 'null'), True)
@@ -36,6 +36,26 @@ class LettingAgentTests(TestCase):
         self.assertEqual((letting_agent.phone != 'null'), True)
         self.assertEqual((letting_agent.email != 'null'), True)
         
+class UserProfileTests(TestCase):
+    def test_user_profile(self):
+        user_pro = UserProfile(user_id=1, datejoined=False, accessibleUser=False, superUser=False, totallikes=1, totalComments=0)
+        user_pro.save()
+        self.assertEqual((user_pro.datejoined == False), False)
+        self.assertEqual((user_pro.superUser == False), True)
+        self.assertEqual((user_pro.accessibleUser == False), True)
+        self.assertEqual((user_pro.totallikes >= 0), True)
+        self.assertEqual((user_pro.totalComments >= 0), True)        
+    
+class City_test(TestCase):
+    def test_city(self):
+        city = City(name='test', uniqueName='abc',description='abcd')
+        city.save()
+        self.assertEqual((city.name != 'null'), True)
+        self.assertEqual((city.uniqueName != 'null'), True)
+        self.assertEqual((city.description != 'null'), True)
+        
+
+            
         
 # Test view
 class IndexViewTests(TestCase):
@@ -58,5 +78,3 @@ class ContactViewTest(TestCase):
         response = self.client.get(reverse('rent_live:contact'))
         self.assertEqual(response.status_code, 200)
 
-class SearchResultsView(TestCase):
-    
